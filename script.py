@@ -33,6 +33,7 @@ while run:
 
     # checar si mantiene el presionado
     mb = pygame.mouse.get_pressed()
+    mx, my = pygame.mouse.get_pos()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
