@@ -15,6 +15,10 @@ class Cuadricula:
         self.filas = filas
         self.columnas = columnas
 
+    def crearCuadricula(self,cols, rows):
+        # creates 2d-list to use to hold data about plant properties depending on their location
+        # on the 9x5 lawn
+        return [["" for a in range(cols)] for b in range(rows)]
 
 class Defensa:
     def __int__(self):
