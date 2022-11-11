@@ -13,6 +13,7 @@ generar = 200
 
 run = True
 
+
 def dibujar_cuadricula():
     contador = 0
     for ponery in range(100,580, 100):
@@ -33,28 +34,24 @@ def dibujar_cuadricula():
                 pygame.draw.rect(win, verdeoscuro, pygame.Rect(generar, ponery, 80, 100))
         contador += 1
 
+
 def detectar_cuadricula(x, y):
     divx = int(((x + 200)/80)-5)
     divy = int(((y-100)/100))
     print(f"Esta en la columna {divx}, fila {divy}")
 
-class plantas:
-    def __init__(self,x,y):
-        self.x = x
-        self.y = y
-    def lanzaguizantes(self):
-        pygame.draw.circle(win, (255,255,255), (100, 100), 25)
+
+def generar_tabla():
+    pygame.draw.rect(win, (232, 118, 11), pygame.Rect(170, 0, 420, 100))
 
 
-
-defensas= plantas(250,250)
 while run:
     win.fill((0,0,0))
     mx, my = pygame.mouse.get_pos()
 
     detectar_cuadricula(mx, my)
     dibujar_cuadricula()
-    defensas.lanzaguizantes()
+    generar_tabla()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
 
