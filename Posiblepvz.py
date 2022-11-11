@@ -1,6 +1,6 @@
 import pygame
 pygame.init()
-win = pygame.display.set_mode((1000, 620))
+win = pygame.display.set_mode((1100, 620))
 pygame.display.set_caption("xd wachin")
 
 verdefosfo= (79, 222, 59)
@@ -38,20 +38,29 @@ def dibujar_cuadricula():
 def detectar_cuadricula(x, y):
     divx = int(((x + 200)/80)-5)
     divy = int(((y-100)/100))
-    print(f"Esta en la columna {divx}, fila {divy}")
+
+def drag(press):
+    if press:
+        print("oprimiendo")
+    else:
+        print("No oprimiendo")
 
 
 def generar_tabla():
-    pygame.draw.rect(win, (232, 118, 11), pygame.Rect(170, 0, 420, 100))
+    pygame.draw.rect(win, (232, 118, 11), pygame.Rect(170, 0, 530, 100))
+    for generar in range(175, 700, 75):
+        pygame.draw.rect(win, (255, 183, 115), pygame.Rect(generar, 5, 70, 90))
 
 
 while run:
     win.fill((0,0,0))
     mx, my = pygame.mouse.get_pos()
-
+    press= pygame.mouse.get_pressed()
+    drag(press)
     detectar_cuadricula(mx, my)
     dibujar_cuadricula()
     generar_tabla()
+    pygame.draw.circle(win, (255, 255, 255), (285, 36), 15)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
 
