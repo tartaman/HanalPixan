@@ -1,6 +1,6 @@
 import pygame
 pygame.init()
-win = pygame.display.set_mode((1000, 800))
+win = pygame.display.set_mode((1000, 620))
 pygame.display.set_caption("xd wachin")
 
 verdefosfo= (79, 222, 59)
@@ -15,8 +15,7 @@ run = True
 
 def dibujar_cuadricula():
     contador = 0
-    ponery = 680
-    for ponery in range(680, 180, -100):
+    for ponery in range(100,580, 100):
         if contador%2 == 0:
             for generar in range(200, 900, 160):
                 pygame.draw.rect(win, verdefosfo, pygame.Rect(generar, ponery, 80, 100))
@@ -25,8 +24,7 @@ def dibujar_cuadricula():
                 pygame.draw.rect(win, verdefosfo, pygame.Rect(generar, ponery, 80, 100))
         contador += 1
     contador = 0
-    ponery = 680
-    for ponery in range(680, 180, -100):
+    for ponery in range(100, 580, 100):
         if contador%2 == 0:
             for generar in range(280, 900, 160):
                 pygame.draw.rect(win, verdeoscuro, pygame.Rect(generar, ponery, 80, 100))
@@ -37,7 +35,7 @@ def dibujar_cuadricula():
 
 def detectar_cuadricula(x, y):
     divx = int(((x + 200)/80)-5)
-    divy = int(((y-180)/100)-1)
+    divy = int(((y-100)/100))
     print(f"Esta en la columna {divx}, fila {divy}")
 
 class plantas:
