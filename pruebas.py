@@ -29,11 +29,9 @@ class RectanguloOscuro:
     def dibujar(self):
         pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
 
-    def detectarClick(self):
-        ev = pygame.event.get()
-        for event in ev:
-            if event.type == pygame.MOUSEBUTTONDOWN and (
-                    mx >= self.x or mx <= (self.x + self.width) and (my >= self.y or my <= self.y + self.height)):
+    def detectarClick(self, mx, my):
+        if (self.y + self.height) > my > self.y:
+            if self.x < mx < (self.x + self.width):
                 print(f"hizo click en el cuadrado de la columna {self.columna}, fila {self.fila}.")
 
 
@@ -50,6 +48,14 @@ class RectanguloClaro:
     def dibujar(self):
         pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
 
+    def detectarClick(self, mx, my):
+        if (self.y + self.height) > my > self.y:
+            if self.x < mx < (self.x + self.width):
+                print(f"hizo click en el cuadrado de la columna {self.columna}, fila {self.fila}.")
+
+    def imprimir(self):
+        print(f"")
+
 
 while run:
     win.fill((255, 255, 255))
@@ -58,6 +64,9 @@ while run:
     for event in ev:
         if event.type == pygame.QUIT:
             run = False
+        if event.type == pygame.MOUSEBUTTONUP:
+            for rectangulo in Rectangulos:
+                rectangulo.detectarClick(mx,my)
     if len(Rectangulos) == 0:
         columna = 0
         fila = 0
@@ -84,6 +93,5 @@ while run:
                 columna = 0
     for rectangulo in Rectangulos:
         rectangulo.dibujar()
-
     pygame.time.delay(10)
     pygame.display.update()
