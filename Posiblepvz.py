@@ -54,7 +54,7 @@ def dibujar_cuadricula():
 
 
 def detectar_cuadricula(x, y):
-    divx = int(((x - 200)/((width - 500)//9)))
+    divx = int(((x - 200)/((width - 450)//9)))
     divy = int((y-100)/((height-100)//5))
     print(f"Esta en la columna {divx}, fila {divy}")
 
