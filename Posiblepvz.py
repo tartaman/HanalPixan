@@ -32,20 +32,20 @@ def dibujar_cuadricula():
 #le voy a poner de que width y height pa que funcione aunque cambiemos algo
     for posicionesEnY in range(100, height, (height - 100)//5):
         if fila % 2 == 0:
-            for generar in range(200, width - 50, (width - 250)//9):
+            for generar in range(200, width - 250, (width - 450)//9):
                 if contador % 2 == 0:
-                    pygame.draw.rect(win, verdefosfo, pygame.Rect(generar, posicionesEnY, (width - 250)//9, (height-100)//5))
+                    pygame.draw.rect(win, verdefosfo, pygame.Rect(generar, posicionesEnY, (width - 450)//9, (height-100)//5))
                 else:
-                    pygame.draw.rect(win, verdeoscuro, pygame.Rect(generar, posicionesEnY, (width - 250)//9, (height-100)//5))
+                    pygame.draw.rect(win, verdeoscuro, pygame.Rect(generar, posicionesEnY, (width - 450)//9, (height-100)//5))
                 contador += 1
             fila += 1
         else:
             contador = 0
-            for generar in range(200, width - 50, (width - 250)//9):
+            for generar in range(200, width - 250, (width - 450)//9):
                 if contador % 2 == 0:
-                    pygame.draw.rect(win, verdeoscuro, pygame.Rect(generar, posicionesEnY, (width - 250)//9, (height-100)//5))
+                    pygame.draw.rect(win, verdeoscuro, pygame.Rect(generar, posicionesEnY, (width - 450)//9, (height-100)//5))
                 else:
-                    pygame.draw.rect(win, verdefosfo, pygame.Rect(generar, posicionesEnY, (width - 250)//9, (height-100)//5))
+                    pygame.draw.rect(win, verdefosfo, pygame.Rect(generar, posicionesEnY, (width - 450)//9, (height-100)//5))
                 contador += 1
             fila += 1
 
@@ -54,8 +54,9 @@ def dibujar_cuadricula():
 
 
 def detectar_cuadricula(x, y):
-    divx = int(((x + 200)/80)-5)
-    divy = int(((y-100)/100))
+    divx = int(((x - 200)/((width - 500)//9)))
+    divy = int((y-100)/((height-100)//5))
+    print(f"Esta en la columna {divx}, fila {divy}")
 
 def drag(event):
     for events in event:
