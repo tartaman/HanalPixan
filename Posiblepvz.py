@@ -1,7 +1,7 @@
 import pygame
 pygame.init()
-width = 1100
-height = 620
+width = 1280
+height = 720
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("xd wachin")
 
@@ -15,24 +15,40 @@ generar = 200
 
 run = True
 
+class RectanguloOscuro:
+    def __init__(self, x, y):
+        self.color = (28, 184, 6)
+        self.size = (width//9, height//5)
+        self.x = x
+        self.y = y
+
+class RectanguloClaro:
+    pass
 
 def dibujar_cuadricula():
     contador = 0
     #pa alternar
-    contador2 = 0
+    fila = 0
 #le voy a poner de que width y height pa que funcione aunque cambiemos algo
-    for posicionesEnY in range(100, height, (height- 200)//5):
+    for posicionesEnY in range(100, height, (height - 100)//5):
+        if fila % 2 == 0:
+            for generar in range(200, width - 50, (width - 250)//9):
+                if contador % 2 == 0:
+                    pygame.draw.rect(win, verdefosfo, pygame.Rect(generar, posicionesEnY, (width - 250)//9, (height-100)//5))
+                else:
+                    pygame.draw.rect(win, verdeoscuro, pygame.Rect(generar, posicionesEnY, (width - 250)//9, (height-100)//5))
+                contador += 1
+            fila += 1
+        else:
+            contador = 0
+            for generar in range(200, width - 50, (width - 250)//9):
+                if contador % 2 == 0:
+                    pygame.draw.rect(win, verdeoscuro, pygame.Rect(generar, posicionesEnY, (width - 250)//9, (height-100)//5))
+                else:
+                    pygame.draw.rect(win, verdefosfo, pygame.Rect(generar, posicionesEnY, (width - 250)//9, (height-100)//5))
+                contador += 1
+            fila += 1
 
-        for generar in range(0, width, width//9):
-            if contador % 2 == 0:
-                pygame.draw.rect(win, verdefosfo, pygame.Rect(generar, posicionesEnY, width//9, (height-200)//5))
-            else:
-                pygame.draw.rect(win, verdeoscuro, pygame.Rect(generar, posicionesEnY, width//9, (height-200)//5))
-
-            if contador > 9:
-                
-                contador = 1
-            contador += 1
 
 
 
