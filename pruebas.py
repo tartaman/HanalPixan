@@ -6,16 +6,27 @@ height = 720
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("xd wachin")
 
-verdefosfo = (79, 222, 59)
-verdeoscuro = (28, 184, 6)
 
-mx, my = pygame.mouse.get_pos()
 
-Rectangulos = []
 
 run = True
 
+class RectanguloPlantas:
+    def __init__(self, x, y):
+        self.color = (253, 187, 73)
+        self.widthH = width//3
+        self.heightH = height//8
+        self.x = x
+        self.y = y
+    def dibujarRectangulo(self):
+        pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.widthH, self.heightH))
 
+class CuadroPlantas(RectanguloPlantas):
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        self.color = (254, 214, 146)
+        self.width = (self.widthH- 25)//4
+        self.heightH = (self.heightH - 10)
 class RectanguloOscuro:
     def __init__(self, x, y, columna, fila):
         self.color = verdeoscuro
@@ -53,10 +64,14 @@ class RectanguloClaro:
             if self.x < mx < (self.x + self.width):
                 print(f"hizo click en el cuadrado de la columna {self.columna}, fila {self.fila}.")
 
-    def imprimir(self):
-        print(f"")
+verdefosfo = (79, 222, 59)
+verdeoscuro = (28, 184, 6)
 
+mx, my = pygame.mouse.get_pos()
 
+Rectangulos = []
+CuadroPlantas = []
+rectanguloPlantas = RectanguloPlantas(((width - width//3)//2), 0)
 while run:
     win.fill((255, 255, 255))
     mx, my = pygame.mouse.get_pos()
@@ -93,5 +108,7 @@ while run:
                 columna = 0
     for rectangulo in Rectangulos:
         rectangulo.dibujar()
+    
+    rectanguloPlantas.dibujarRectangulo()
     pygame.time.delay(10)
     pygame.display.update()
