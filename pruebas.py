@@ -23,9 +23,9 @@ class RectanguloPlantas:
 
 class CuadroPlantas:
     def __init__(self, x, y=5):
-        self.color = (0, 0, 0)#(254, 214, 146)
-        self.width = 50
-        self.height = 50
+        self.color = (254, 214, 146)
+        self.width = 70
+        self.height = 70
         self.x = x
         self.y = y
 
@@ -121,11 +121,12 @@ while run:
     # Dibujar cuadro plantas
     rectanguloPlantas.dibujarRectangulo()
     if len(CuadradosPlantas) == 0:
-        for x in range(((width - width//3)//2) + 5, width//3, 50):
-            CuadradosPlantas.append(CuadroPlantas(x, 5))
+        for x in range(457, 853 - 75, 75):
+            CuadradosPlantas.append(CuadroPlantas(x, 10))
 
     for cuadro in CuadradosPlantas:
         cuadro.dibujarCuadrado()
 
+    # print(mx, my)
     pygame.time.delay(10)
     pygame.display.update()
