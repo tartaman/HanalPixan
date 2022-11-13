@@ -16,7 +16,7 @@ class Piñata:
         self.image = ""
         #radio por ahora pq ajam
         self.radius = 35
-    def dibujar(self):
+    def dibujarDefensa(self):
         pygame.draw.circle(win, (255, 0, 0), (self.x, self.y), self.radius)
 
 
@@ -51,18 +51,17 @@ class CuadroPlantas:
     def dibujarCuadrado(self):
         pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
 
-
-    def mostrarLoQueContiene(self):
-        self.contains[self.indice].dibujar()
-
     def detectarClick(self, mx, my):
         if (self.y + self.height) > my > self.y:
             if self.x < mx < (self.x + self.width):
                 print(f"Escogio el cuadrado {self.indice}")
                 #si no tiene agarrado nada entonces agarra si no pues no vea
                 if len(ahoritaTiene) == 0:
-                    ahoritaTiene.append(self.contains[self.indice])
-                
+                    #Crea un objeto nuevo fuera de la pantalla para agregar
+                    ahoritaTiene.append(Piñata(-100,-100))
+    
+    def mostrarLoQueContiene(self):
+        self.contains[self.indice].dibujarDefensa()
 
 
 class RectanguloOscuro:
@@ -75,6 +74,7 @@ class RectanguloOscuro:
         self.columna = columna
         self.fila = fila
         self.indice = indice
+        self.contiene = []
 
     def dibujar(self):
         pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
@@ -82,7 +82,18 @@ class RectanguloOscuro:
     def detectarClick(self, mx, my):
         if (self.y + self.height) > my > self.y:
             if self.x < mx < (self.x + self.width):
-                print(f"hizo click en el cuadrado de la columna {self.columna}, fila {self.fila}. indice: {self.indice}")
+                print(f"hizo click en el cuadrado de la columna {self.columna}, fila {self.fila}. indice: {self.indice}contiene {self.contiene}")
+                #si tienes algo en el mouse y la casilla no contiene nada:
+                if ahoritaTiene != [] and self.contiene == []:
+                    #cambiar las coordenadas
+                    ahoritaTiene[0].x = self.x + self.width//2
+                    ahoritaTiene[0].y = self.y + self.height//2
+                    self.contiene.append(ahoritaTiene[0])
+                    ahoritaTiene.pop()
+
+    def mostrarLoQueContiene(self):
+        if self.contiene != []:
+            self.contiene[0].dibujarDefensa()
 
 
 class RectanguloClaro:
@@ -102,11 +113,19 @@ class RectanguloClaro:
     def detectarClick(self, mx, my):
         if (self.y + self.height) > my > self.y:
             if self.x < mx < (self.x + self.width):
-                print(f"hizo click en el cuadrado de la columna {self.columna}, fila {self.fila}. indice: {self.indice}")
+                print(f"hizo click en el cuadrado de la columna {self.columna}, fila {self.fila}. indice: {self.indice}, contiene {self.contiene}")
                 #si tienes algo en el mouse y la casilla no contiene nada:
                 if ahoritaTiene != [] and self.contiene == []:
-                    self.contiene.append(ahoritaTiene)
+                    #cambiar las coordenadas
+                    ahoritaTiene[0].x = self.x + self.width//2
+                    ahoritaTiene[0].y = self.y + self.height//2
+                    self.contiene.append(ahoritaTiene[0])
                     ahoritaTiene.pop()
+        self.mostrarLoQueContiene()
+
+    def mostrarLoQueContiene(self):
+        if self.contiene != []:
+            self.contiene[0].dibujarDefensa()
     
                     
 
@@ -170,6 +189,8 @@ while run:
                 columna = 0
     for rectangulo in Rectangulos:
         rectangulo.dibujar()
+        rectangulo.mostrarLoQueContiene()
+
 
     # Dibujar cuadro plantas
     rectanguloPlantas.dibujarRectangulo()
@@ -181,10 +202,10 @@ while run:
 
     for cuadro in CuadradosPlantas:
         cuadro.dibujarCuadrado()
+        #Lo que contiene cada cuadrado
+        cuadro.mostrarLoQueContiene()
 
-    #Lo que contiene cada cuadrado
-    for cuadrado in CuadradosPlantas:
-        cuadrado.mostrarLoQueContiene()
+
     # print(mx, my)
     pygame.time.delay(10)
     pygame.display.update()
