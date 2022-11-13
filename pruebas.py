@@ -45,10 +45,20 @@ class CuadroPlantas:
 
     def dibujarCuadrado(self):
         pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
-    def loQueContiene(self, defensasEscogidas):
-        for defensa in defensasEscogidas:
+
+
+    def mostrarLoQueContiene(self):
+        for defensa in self.contains:
             #aqui pondrias los sprites para que se dibuje pero por ahora va a ser un circulo
             defensa.dibujar()
+
+    def detectarClick(self, mx, my):
+        if (self.y + self.height) > my > self.y:
+            if self.x < mx < (self.x + self.width):
+                print(f"Escogio el cuadrado")
+                #si no tiene agarrado nada entonces agarra si no pues no vea
+                if len(ahoritaTiene) == 0:
+                    ahoritaTiene.append(self.contains[])
 
 
 class RectanguloOscuro:
@@ -100,6 +110,8 @@ CuadradosPlantas = []
 
 defensasEscogidas = []
 
+ahoritaTiene = []
+
 rectanguloPlantas = RectanguloPlantas(((width - (width // 3)) // 2), 0)
 while run:
     win.fill((255, 255, 255))
@@ -149,6 +161,9 @@ while run:
     for cuadro in CuadradosPlantas:
         cuadro.dibujarCuadrado()
 
+    #Lo que contiene cada cuadrado
+    for cuadrado in CuadradosPlantas:
+        cuadrado.mostrarLoQueContiene()
     # print(mx, my)
     pygame.time.delay(10)
     pygame.display.update()
