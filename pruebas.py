@@ -33,36 +33,40 @@ class RectanguloPlantas:
 
 
 class CuadroPlantas:
-    def __init__(self, x, y=5):
+    def __init__(self, x, indice, y=5):
         self.color = (254, 214, 146)
         self.width = 70
         self.height = 70
         self.x = x
         self.y = y
+        self.indice = indice
         #IMPORTANTE va a contener una piñata por pruebas, pero luego que hagamos para que escoja las plantas, va a
         #contener [] y luego vamos a recorrer el arreglo de plantas escogidas y ponerle a cada uno lo que contiene
-        self.contains = [Piñata(self.x + 35, self.y + 35)]
+        self.contains = [Piñata(self.x + 35, self.y + 35),
+                         Piñata(self.x + 35, self.y + 35),
+                         Piñata(self.x + 35, self.y + 35),
+                         Piñata(self.x + 35, self.y + 35),
+                         Piñata(self.x + 35, self.y + 35)]
 
     def dibujarCuadrado(self):
         pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
 
 
     def mostrarLoQueContiene(self):
-        for defensa in self.contains:
-            #aqui pondrias los sprites para que se dibuje pero por ahora va a ser un circulo
-            defensa.dibujar()
+        self.contains[self.indice].dibujar()
 
     def detectarClick(self, mx, my):
         if (self.y + self.height) > my > self.y:
             if self.x < mx < (self.x + self.width):
-                print(f"Escogio el cuadrado")
+                print(f"Escogio el cuadrado {self.indice}")
                 #si no tiene agarrado nada entonces agarra si no pues no vea
                 if len(ahoritaTiene) == 0:
-                    ahoritaTiene.append(self.contains[])
+                    ahoritaTiene.append(self.contains[self.indice])
+                
 
 
 class RectanguloOscuro:
-    def __init__(self, x, y, columna, fila):
+    def __init__(self, x, y, columna, fila, indice):
         self.color = verdeoscuro
         self.width = ((width - 450) // 9)
         self.height = ((height - 200) // 5)
@@ -70,6 +74,7 @@ class RectanguloOscuro:
         self.y = y
         self.columna = columna
         self.fila = fila
+        self.indice = indice
 
     def dibujar(self):
         pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
@@ -77,11 +82,11 @@ class RectanguloOscuro:
     def detectarClick(self, mx, my):
         if (self.y + self.height) > my > self.y:
             if self.x < mx < (self.x + self.width):
-                print(f"hizo click en el cuadrado de la columna {self.columna}, fila {self.fila}.")
+                print(f"hizo click en el cuadrado de la columna {self.columna}, fila {self.fila}. indice: {self.indice}")
 
 
 class RectanguloClaro:
-    def __init__(self, x, y, columna, fila):
+    def __init__(self, x, y, columna, fila, indice):
         self.color = verdefosfo
         self.width = ((width - 450) // 9)
         self.height = ((height - 200) // 5)
@@ -89,14 +94,21 @@ class RectanguloClaro:
         self.y = y
         self.columna = columna
         self.fila = fila
-
+        self.indice = indice
+        self.contiene = []
     def dibujar(self):
         pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
 
     def detectarClick(self, mx, my):
         if (self.y + self.height) > my > self.y:
             if self.x < mx < (self.x + self.width):
-                print(f"hizo click en el cuadrado de la columna {self.columna}, fila {self.fila}.")
+                print(f"hizo click en el cuadrado de la columna {self.columna}, fila {self.fila}. indice: {self.indice}")
+                #si tienes algo en el mouse y la casilla no contiene nada:
+                if ahoritaTiene != [] and self.contiene == []:
+                    self.contiene.append(ahoritaTiene)
+                    ahoritaTiene.pop()
+    
+                    
 
 
 verdefosfo = (79, 222, 59)
@@ -123,29 +135,36 @@ while run:
         if event.type == pygame.MOUSEBUTTONUP:
             for rectangulo in Rectangulos:
                 rectangulo.detectarClick(mx, my)
+            for cuadrado in CuadradosPlantas:
+                cuadrado.detectarClick(mx, my)
 
     # Crear cuadricula
     if len(Rectangulos) == 0:
+        i = 0
         columna = 0
         fila = 0
         for y in range(100, height - 100, (height - 200) // 5):
             if fila % 2 == 0:
                 for x in range(200, width - 250, (width - 450) // 9):
                     if columna % 2 == 0:
-                        Rectangulos.append(RectanguloClaro(x, y, columna, fila))
+                        Rectangulos.append(RectanguloClaro(x, y, columna, fila, i))
                         columna += 1
+                        i += 1
                     else:
-                        Rectangulos.append(RectanguloOscuro(x, y, columna, fila))
+                        Rectangulos.append(RectanguloOscuro(x, y, columna, fila, i))
                         columna += 1
+                        i += 1
                 fila += 1
             else:
                 for x in range(200, width - 250, (width - 450) // 9):
                     if columna % 2 == 0:
-                        Rectangulos.append(RectanguloOscuro(x, y, columna, fila))
+                        Rectangulos.append(RectanguloOscuro(x, y, columna, fila, i))
                         columna += 1
+                        i += 1
                     else:
-                        Rectangulos.append(RectanguloClaro(x, y, columna, fila))
+                        Rectangulos.append(RectanguloClaro(x, y, columna, fila, i))
                         columna += 1
+                        i += 1
                 fila += 1
             if columna >= 9:
                 columna = 0
@@ -155,8 +174,10 @@ while run:
     # Dibujar cuadro plantas
     rectanguloPlantas.dibujarRectangulo()
     if len(CuadradosPlantas) == 0:
+        i = 0
         for x in range(457, 853 - 75, 75):
-            CuadradosPlantas.append(CuadroPlantas(x, 10))
+            CuadradosPlantas.append(CuadroPlantas(x, i, 10))
+            i += 1
 
     for cuadro in CuadradosPlantas:
         cuadro.dibujarCuadrado()
