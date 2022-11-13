@@ -7,7 +7,47 @@ height = 720
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("xd wachin")
 
+""" 
+-Hacer la pala (para quitar plantas) LISTO
+- Crear varias plantas y que se ordenen según el cuadrado LISTO
+falta:
+
+- Que disparen 
+-Crear enemigos EN PROCESO
+-Que se muevan en las líneas
+-Que se creen aleatoriamente
+-Que se puedan escoger las plantas 
+-Segun las plantas escogidas, ordenarlas en la cuadricula de plantas
+-Hacer sistema de oleadas
+-Precio de las plantas y generador de dinero
+-Mecanicas de cada planta
+"""
 run = True
+
+class Enemigo:
+    def __init__(self,x , y, fila):
+        self.x = x
+        self.y = y
+        self.fila = fila
+    def dibujar(self):
+        pygame.draw.circle(win, (0, 0, 0),(self.x, self.y), 35)
+class CuadroPala:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.width = 100
+        self.height = 100
+        self.color = (0, 0, 0)
+    def dibujar(self):
+        pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
+
+    def detectarClick(self, mx, my):
+        if (self.y + self.height) > my > self.y:
+            if self.x < mx < (self.x + self.width):
+                if len(ahoritaTiene) == 0:
+                    print("pala")
+                    ahoritaTiene.append("Quitara")
+                    print(f"ahorita tiene: {ahoritaTiene}")
 
 
 class Piñata:
@@ -106,8 +146,8 @@ class CuadroPlantas:
         self.x = x
         self.y = y
         self.indice = indice
-        # IMPORTANTE va a contener una piñata por pruebas, pero luego que hagamos para que escoja las plantas, va a
-        # contener [] y luego vamos a recorrer el arreglo de plantas escogidas y ponerle a cada uno lo que contiene
+        # todo// IMPORTANTE va a contener una piñata por pruebas, pero luego que hagamos para que escoja las plantas, va a
+        # todo// contener [] y luego vamos a recorrer el arreglo de plantas escogidas y ponerle a cada uno lo que contiene
         self.contains = []
 
     def dibujarCuadrado(self):
@@ -117,11 +157,15 @@ class CuadroPlantas:
         if (self.y + self.height) > my > self.y:
             if self.x < mx < (self.x + self.width):
                 print(f"Escogio el cuadrado {self.indice}, que contiene {self.contains}")
-                # si no tiene agarrado nada entonces agarra si no pues no vea
+                #todo si no tiene agarrado nada entonces agarra si no pues no vea
                 if len(ahoritaTiene) == 0:
-                    # Crea un objeto nuevo fuera de la pantalla para agregar
+                    #todo Crea un objeto nuevo fuera de la pantalla para agregar
                     defensa = self.contains[self.indice]
                     ahoritaTiene.append(defensa)
+                    print(f"ahorita tiene: {ahoritaTiene}")
+                if ahoritaTiene[0] == "Quitara":
+                    ahoritaTiene.pop()
+                    print(f"Ahorita tiene: {ahoritaTiene}")
 
     def mostrarLoQueContiene(self):
         self.contains[self.indice].x = self.x + self.width//2
@@ -150,9 +194,17 @@ class RectanguloOscuro:
                 print(
                     f"hizo click en el cuadrado de la columna {self.columna}, fila {self.fila}. indice: {self.indice}contiene {self.contiene}")
                 # si tienes algo en el mouse y la casilla no contiene nada:
-                if ahoritaTiene != [] and self.contiene == []:
+                if ahoritaTiene != [] and self.contiene == [] and ahoritaTiene[0] != "Quitara":
                     self.contiene.append(ahoritaTiene[0])
                     ahoritaTiene.pop(0)
+                    print(f"ahorita tiene: {ahoritaTiene}")
+                if len(ahoritaTiene) != 0:
+                    if ahoritaTiene[0] == "Quitara" and self.contiene != []:
+                        self.contiene.remove(self.contiene[0])
+                        print("lo quito")
+                    if ahoritaTiene[0] == "Quitara" and self.contiene == []:
+                        ahoritaTiene.pop()
+                        print(f"Ahorita tiene {ahoritaTiene}")
 
     def mostrarLoQueContiene(self):
         if self.contiene:
@@ -183,9 +235,17 @@ class RectanguloClaro:
                 print(
                     f"hizo click en el cuadrado de la columna {self.columna}, fila {self.fila}. indice: {self.indice}, contiene {self.contiene}")
                 # si tienes algo en el mouse y la casilla no contiene nada:
-                if ahoritaTiene != [] and self.contiene == []:
+                if ahoritaTiene != [] and self.contiene == [] and ahoritaTiene[0] != "Quitara":
                     self.contiene.append(ahoritaTiene[0])
                     ahoritaTiene.pop(0)
+                    print(f"ahorita tiene: {ahoritaTiene}")
+                if len(ahoritaTiene) != 0:
+                    if ahoritaTiene[0] == "Quitara" and self.contiene != []:
+                        self.contiene.remove(self.contiene[0])
+                        print("lo quito")
+                    if ahoritaTiene[0] == "Quitara" and self.contiene == []:
+                        ahoritaTiene.pop()
+                        print(f"Ahorita tiene {ahoritaTiene}")
 
     def mostrarLoQueContiene(self):
         if self.contiene != []:
@@ -210,6 +270,7 @@ defensasEscogidas = [Piñata(-100, -100), Piñata2(-100, -100), Piñata3(-100, -
 ahoritaTiene = []
 
 rectanguloPlantas = RectanguloPlantas(((width - (width // 3)) // 2), 0)
+cuadroPala = CuadroPala(0,0)
 while run:
     win.fill((255, 255, 255))
     mx, my = pygame.mouse.get_pos()
@@ -217,11 +278,13 @@ while run:
     for event in ev:
         if event.type == pygame.QUIT:
             run = False
+        #todo aqui abajo se pone lo que necesite ser con click
         if event.type == pygame.MOUSEBUTTONUP:
             for rectangulo in Rectangulos:
                 rectangulo.detectarClick(mx, my)
             for cuadrado in CuadradosPlantas:
                 cuadrado.detectarClick(mx, my)
+            cuadroPala.detectarClick(mx, my)
 
     # Crear cuadricula
     if len(Rectangulos) == 0:
@@ -276,6 +339,8 @@ while run:
                 cuadro.contains.append(objDefensa)
         # Lo que contiene cada cuadrado
         cuadro.mostrarLoQueContiene()
+    #Dibujar pala
+    cuadroPala.dibujar()
 
     # print(mx, my)
     pygame.time.delay(10)
