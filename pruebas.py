@@ -9,6 +9,17 @@ pygame.display.set_caption("xd wachin")
 run = True
 
 
+class Piñata:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.image = ""
+        #radio por ahora pq ajam
+        self.radius = 35
+    def dibujar(self):
+        pygame.draw.circle(win, (255, 0, 0), (self.x, self.y), self.radius)
+
+
 class RectanguloPlantas:
     def __init__(self, x, y):
         self.color = (253, 187, 73)
@@ -28,9 +39,16 @@ class CuadroPlantas:
         self.height = 70
         self.x = x
         self.y = y
+        #IMPORTANTE va a contener una piñata por pruebas, pero luego que hagamos para que escoja las plantas, va a
+        #contener [] y luego vamos a recorrer el arreglo de plantas escogidas y ponerle a cada uno lo que contiene
+        self.contains = [Piñata(self.x + 35, self.y + 35)]
 
     def dibujarCuadrado(self):
         pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
+    def loQueContiene(self, defensasEscogidas):
+        for defensa in defensasEscogidas:
+            #aqui pondrias los sprites para que se dibuje pero por ahora va a ser un circulo
+            defensa.dibujar()
 
 
 class RectanguloOscuro:
@@ -77,7 +95,11 @@ verdeoscuro = (28, 184, 6)
 mx, my = pygame.mouse.get_pos()
 
 Rectangulos = []
+
 CuadradosPlantas = []
+
+defensasEscogidas = []
+
 rectanguloPlantas = RectanguloPlantas(((width - (width // 3)) // 2), 0)
 while run:
     win.fill((255, 255, 255))
