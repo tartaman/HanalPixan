@@ -23,7 +23,17 @@ falta:
 -Mecanicas de cada planta
 """
 run = True
-Oleada = 1
+class Projectil:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.velx = 3
+        self.radio = 10
+        self.color = (255, 255, 0)
+    def dibujar(self):
+        pygame.draw.circle(win, self.color, (self.x, self.y), self.radio)
+    def mover(self):
+        self.x += self.velx
 
 
 class BotonSig:
@@ -34,6 +44,7 @@ class BotonSig:
         self.height = 100
         self.color = (60, 179, 113)
         self.clickeable = True
+        self.Oleada = 0
     def dibujar(self):
         pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
 
@@ -41,16 +52,27 @@ class BotonSig:
         if (self.y + self.height) > my > self.y:
             if self.x < mx < (self.x + self.width):
                 print("Hizo click")
-
+                self.Oleada += 1
                 if len(Enemigos) == 0 and self.clickeable:
                     #si se puede clickear significa que acabo la oleada
                     self.clickeable = False
-                    # todo 5 enemigos por oleada
-                    for i in range(Oleada * 5):
+                    # 5 enemigos por oleada
+                    for i in range(self.Oleada * 5):
+                        #Aqui podemos poner algo random que agarre a un enemigo de todos los que vamos a tener
                         Enemigos.append(Enemigo())
                         # Lo que vamos a hacer es que cuando el enemigo muera, lo quitamos de la lista y pues muere, sabes
                         # y cuando la lista ya no tenga, va a volver a poner enemigos.
+                    for enemigo in Enemigos:
+                        enemigo.x += random.randint(0, 10)*35
                 print(f"en enemigos hay: {Enemigos}")
+                print(f"Oleada: {self.Oleada}")
+    def yaSePuede(self, enemigos):
+        if enemigos:
+            self.clickeable = False
+            self.color = (125, 40, 0)
+        else:
+            self.clickeable = True
+            self.color = (60, 179, 113)
 
 
 
@@ -58,7 +80,7 @@ class Enemigo:
     def __init__(self):
         self.x = 1155
         self.y = -100
-        self.velx = 3
+        self.velx = 1
         self.salud = 100
         self.fila = random.randint(0, 4)
 
@@ -66,17 +88,20 @@ class Enemigo:
         pygame.draw.circle(win, (0, 0, 0), (self.x, self.y), 35)
     def mover(self):
         self.x -= self.velx
+
+    def fuera(self):
+        return (self.x < 0)
     def ySegunSuFila(self):
         """"como no hay switch pos ajam puro if"""
-        if fila == 0:
+        if self.fila == 0:
             self.y = 150
-        if fila == 1:
+        if self.fila == 1:
             self.y = 250
-        if fila == 2:
+        if self.fila == 2:
             self.y = 350
-        if fila == 3:
+        if self.fila == 3:
             self.y = 450
-        if fila == 4:
+        if self.fila == 4:
             self.y = 550
     def seMurio(self):
         if self.salud > 0:
@@ -407,12 +432,15 @@ while run:
     #Dibujar boton sig
     botonSig.dibujar()
     #Dibujar enemigos si hay enemigos
-    
+
     for enemigo in Enemigos:
         enemigo.ySegunSuFila()
         enemigo.dibujar()
         enemigo.mover()
-
+        if enemigo.fuera():
+            Enemigos.remove(enemigo)
+    #Siempre checar si el boton se puede clickear
+    botonSig.yaSePuede(Enemigos)
     #print(mx, my)
     pygame.time.delay(10)
     pygame.display.update()
