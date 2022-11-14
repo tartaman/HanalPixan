@@ -21,6 +21,7 @@ falta:
 -Hacer sistema de oleadas
 -Precio de las plantas y generador de dinero
 -Mecanicas de cada planta
+-si el enemigo esta en la fila entonces dispara
 """
 run = True
 class Projectil:
@@ -85,10 +86,12 @@ class Enemigo:
         self.y = -100
         self.velx = 1
         self.salud = 100
+        self.radio = 35
         self.fila = random.randint(0, 4)
+        self.hitbox = (self.x, self.y, self.radio*2, self.radio*2)
 
     def dibujar(self):
-        pygame.draw.circle(win, (0, 0, 0), (self.x, self.y), 35)
+        pygame.draw.circle(win, (0, 0, 0), (self.x, self.y), self.radio)
     def mover(self):
         self.x -= self.velx
 
@@ -143,6 +146,7 @@ class Piñata:
         self.projectiles = []
         self.cooldown = 0
         self.daño = 10
+        self.nombre = "Piñata"
 
     def dibujarDefensa(self):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
@@ -175,12 +179,30 @@ class Piñata2:
         # radio por ahora pq ajam
         self.radius = 35
         self.color = (255, 255, 0)
-
+        self.projectiles = []
+        self.cooldown = 0
+        self.daño = 10
+        self.nombre = "Piñata2"
     def dibujarDefensa(self):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
     def dibujarDefensaEC(self, x, y):
         pygame.draw.circle(win, self.color, (x, y), self.radius)
+
+    def Cooldown(self):
+        if self.cooldown >= 60:
+            self.cooldown = 0
+        elif self.cooldown >= 0:
+            self.cooldown += 1
+    def atacar(self):
+        self.Cooldown()
+        if self.cooldown == 0:
+            self.projectiles.append(Projectil(self.x, self.y))
+        for projectil in self.projectiles:
+            projectil.dibujar()
+            projectil.mover()
+            if projectil.fuera():
+                self.projectiles.remove(projectil)
 
 
 class Piñata3:
@@ -191,12 +213,30 @@ class Piñata3:
         # radio por ahora pq ajam
         self.radius = 35
         self.color = (255, 0, 255)
-
+        self.projectiles = []
+        self.cooldown = 0
+        self.daño = 10
+        self.nombre = "Piñata3"
     def dibujarDefensa(self):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
     def dibujarDefensaEC(self, x, y):
         pygame.draw.circle(win, self.color, (x, y), self.radius)
+
+    def Cooldown(self):
+        if self.cooldown >= 60:
+            self.cooldown = 0
+        elif self.cooldown >= 0:
+            self.cooldown += 1
+    def atacar(self):
+        self.Cooldown()
+        if self.cooldown == 0:
+            self.projectiles.append(Projectil(self.x, self.y))
+        for projectil in self.projectiles:
+            projectil.dibujar()
+            projectil.mover()
+            if projectil.fuera():
+                self.projectiles.remove(projectil)
 
 
 class Piñata4:
@@ -207,12 +247,30 @@ class Piñata4:
         # radio por ahora pq ajam
         self.radius = 35
         self.color = (255, 255, 255)
-
+        self.projectiles = []
+        self.cooldown = 0
+        self.daño = 10
+        self.nombre = "Piñata4"
     def dibujarDefensa(self):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
     def dibujarDefensaEC(self, x, y):
         pygame.draw.circle(win, self.color, (x, y), self.radius)
+
+    def Cooldown(self):
+        if self.cooldown >= 60:
+            self.cooldown = 0
+        elif self.cooldown >= 0:
+            self.cooldown += 1
+    def atacar(self):
+        self.Cooldown()
+        if self.cooldown == 0:
+            self.projectiles.append(Projectil(self.x, self.y))
+        for projectil in self.projectiles:
+            projectil.dibujar()
+            projectil.mover()
+            if projectil.fuera():
+                self.projectiles.remove(projectil)
 
 
 class Piñata5:
@@ -223,12 +281,30 @@ class Piñata5:
         # radio por ahora pq ajam
         self.radius = 35
         self.color = (0, 255, 255)
-
+        self.projectiles = []
+        self.cooldown = 0
+        self.daño = 10
+        self.nombre = "Piñata5"
     def dibujarDefensa(self):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
     def dibujarDefensaEC(self, x, y):
         pygame.draw.circle(win, self.color, (x, y), self.radius)
+
+    def Cooldown(self):
+        if self.cooldown >= 60:
+            self.cooldown = 0
+        elif self.cooldown >= 0:
+            self.cooldown += 1
+    def atacar(self):
+        self.Cooldown()
+        if self.cooldown == 0:
+            self.projectiles.append(Projectil(self.x, self.y))
+        for projectil in self.projectiles:
+            projectil.dibujar()
+            projectil.mover()
+            if projectil.fuera():
+                self.projectiles.remove(projectil)
 
 
 class RectanguloPlantas:
@@ -251,7 +327,7 @@ class CuadroPlantas:
         self.x = x
         self.y = y
         self.indice = indice
-        # todo// IMPORTANTE va a contener una piñata por pruebas, pero luego que hagamos para que escoja las plantas, va a
+        # todo //IMPORTANTE va a contener una piñata por pruebas, pero luego que hagamos para que escoja las plantas, va a
         # todo// contener [] y luego vamos a recorrer el arreglo de plantas escogidas y ponerle a cada uno lo que contiene
         self.contains = []
 
@@ -264,9 +340,22 @@ class CuadroPlantas:
                 print(f"Escogio el cuadrado {self.indice}, que contiene {self.contains}")
                 # todo si no tiene agarrado nada entonces agarra si no pues no vea
                 if len(ahoritaTiene) == 0:
-                    # todo Crea un objeto nuevo fuera de la pantalla para agregar
-                    defensa = self.contains[self.indice]
-                    ahoritaTiene.append(defensa)
+                    # todo Crea un objeto nuevo fuera de la pantalla para agregar necesitamos if que digan que planta es para ponerla
+                    if self.contains[self.indice].nombre == "Piñata":
+                        defensa = Piñata(self.contains[self.indice].x, self.contains[self.indice].y)
+                        ahoritaTiene.append(defensa)
+                    if self.contains[self.indice].nombre == "Piñata2":
+                        defensa = Piñata2(self.contains[self.indice].x, self.contains[self.indice].y)
+                        ahoritaTiene.append(defensa)
+                    if self.contains[self.indice].nombre == "Piñata3":
+                        defensa = Piñata3(self.contains[self.indice].x, self.contains[self.indice].y)
+                        ahoritaTiene.append(defensa)
+                    if self.contains[self.indice].nombre == "Piñata4":
+                        defensa = Piñata4(self.contains[self.indice].x, self.contains[self.indice].y)
+                        ahoritaTiene.append(defensa)
+                    if self.contains[self.indice].nombre == "Piñata5":
+                        defensa = Piñata5(self.contains[self.indice].x, self.contains[self.indice].y)
+                        ahoritaTiene.append(defensa)
                     print(f"ahorita tiene: {ahoritaTiene}")
                 if ahoritaTiene[0] == "Quitara":
                     ahoritaTiene.pop()
@@ -305,6 +394,7 @@ class RectanguloOscuro:
                     print(f"ahorita tiene: {ahoritaTiene}")
                 if len(ahoritaTiene) != 0:
                     if ahoritaTiene[0] == "Quitara" and self.contiene != []:
+                        defensas.remove(self.contiene[0])
                         self.contiene.remove(self.contiene[0])
                         print("lo quito")
                     if ahoritaTiene[0] == "Quitara" and self.contiene == []:
@@ -317,6 +407,7 @@ class RectanguloOscuro:
             self.contiene[0].x = self.x + self.width // 2
             self.contiene[0].y = self.y + self.height // 2
             self.contiene[0].dibujarDefensa()
+
 
 
 class RectanguloClaro:
@@ -346,6 +437,7 @@ class RectanguloClaro:
                     print(f"ahorita tiene: {ahoritaTiene}")
                 if len(ahoritaTiene) != 0:
                     if ahoritaTiene[0] == "Quitara" and self.contiene != []:
+                        defensas.remove(self.contiene[0])
                         self.contiene.remove(self.contiene[0])
                         print("lo quito")
                     if ahoritaTiene[0] == "Quitara" and self.contiene == []:
@@ -376,6 +468,9 @@ Enemigos = []
 
 ahoritaTiene = []
 
+defensas = []
+
+cosasEnRectangulos = 0
 rectanguloPlantas = RectanguloPlantas(((width - (width // 3)) // 2), 0)
 cuadroPala = CuadroPala(0, 0)
 botonSig = BotonSig()
@@ -429,10 +524,11 @@ while run:
     for rectangulo in Rectangulos:
         rectangulo.dibujar()
         rectangulo.mostrarLoQueContiene()
-        if rectangulo.contiene:
-            rectangulo.contiene[0].atacar()
-
-
+        if rectangulo.contiene and rectangulo.contiene[0] not in defensas:
+            defensanueva = rectangulo.contiene[0]
+            defensas.append(defensanueva)
+    for defensa in defensas:
+        defensa.atacar()
 
 
 
@@ -471,5 +567,6 @@ while run:
     #Siempre checar si el boton se puede clickear
     botonSig.yaSePuede(Enemigos)
     #print(mx, my)
+    print(defensas)
     pygame.time.delay(10)
     pygame.display.update()
