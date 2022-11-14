@@ -35,6 +35,9 @@ class Projectil:
     def mover(self):
         self.x += self.velx
 
+    def fuera(self):
+        return (self.x > width)
+
 
 class BotonSig:
     def __init__(self):
@@ -137,6 +140,9 @@ class Piñata:
         # radio por ahora pq ajam
         self.radius = 35
         self.color = (255, 0, 0)
+        self.projectiles = []
+        self.cooldown = 0
+        self.daño = 10
 
     def dibujarDefensa(self):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
@@ -144,6 +150,21 @@ class Piñata:
     # en cuadrado
     def dibujarDefensaEC(self, x, y):
         pygame.draw.circle(win, self.color, (x, y), self.radius)
+
+    def Cooldown(self):
+        if self.cooldown >= 60:
+            self.cooldown = 0
+        elif self.cooldown >= 0:
+            self.cooldown += 1
+    def atacar(self):
+        self.Cooldown()
+        if self.cooldown == 0:
+            self.projectiles.append(Projectil(self.x, self.y))
+        for projectil in self.projectiles:
+            projectil.dibujar()
+            projectil.mover()
+            if projectil.fuera():
+                self.projectiles.remove(projectil)
 
 
 class Piñata2:
@@ -270,7 +291,7 @@ class RectanguloOscuro:
         self.contiene = []
 
     def dibujar(self):
-        pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
+        pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height), 1)
 
     def detectarClick(self, mx, my):
         if (self.y + self.height) > my > self.y:
@@ -311,7 +332,7 @@ class RectanguloClaro:
         self.contiene = []
 
     def dibujar(self):
-        pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
+        pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height),1)
 
     def detectarClick(self, mx, my):
         if (self.y + self.height) > my > self.y:
@@ -408,6 +429,12 @@ while run:
     for rectangulo in Rectangulos:
         rectangulo.dibujar()
         rectangulo.mostrarLoQueContiene()
+        if rectangulo.contiene:
+            rectangulo.contiene[0].atacar()
+
+
+
+
 
     # Dibujar cuadro plantas
     rectanguloPlantas.dibujarRectangulo()
@@ -438,6 +465,8 @@ while run:
         enemigo.dibujar()
         enemigo.mover()
         if enemigo.fuera():
+            Enemigos.remove(enemigo)
+        if enemigo.seMurio():
             Enemigos.remove(enemigo)
     #Siempre checar si el boton se puede clickear
     botonSig.yaSePuede(Enemigos)
