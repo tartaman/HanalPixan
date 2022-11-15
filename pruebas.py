@@ -30,7 +30,7 @@ class Projectil:
         self.y = y
         self.velx = 3
         self.radio = 10
-        self.color = (255, 255, 0)
+        self.color = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
     def dibujar(self):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radio)
     def mover(self):
@@ -127,7 +127,7 @@ class CuadroPala:
         self.y = y
         self.width = 100
         self.height = 100
-        self.color = (0, 0, 0)
+        self.color = (255, 0, 0)
 
     def dibujar(self):
         pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
@@ -162,7 +162,7 @@ class Piñata:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
     def Cooldown(self):
-        if self.cooldown >= 60:
+        if self.cooldown >= 30:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
@@ -177,7 +177,7 @@ class Piñata:
                 if projectil.y - projectil.radio < enemigo.hitbox[1] + enemigo.hitbox[3] and projectil.y + projectil.radio > enemigo.hitbox[1]:
                     if projectil.x + projectil.radio > enemigo.hitbox[0] and projectil.x - projectil.radio < enemigo.hitbox[0] + enemigo.hitbox[2]:
                         if len(self.projectiles) != 0:
-                            self.projectiles.remove(self.projectiles[0])
+                            self.projectiles.remove(projectil)
                             enemigo.leDieron()
             if projectil.fuera():
                 self.projectiles.remove(projectil)
@@ -509,14 +509,14 @@ rectanguloPlantas = RectanguloPlantas(((width - (width // 3)) // 2), 0)
 cuadroPala = CuadroPala(0, 0)
 botonSig = BotonSig()
 while run:
-    win.fill((255, 255, 255))
+    win.fill((0, 0, 0))
     mx, my = pygame.mouse.get_pos()
     ev = pygame.event.get()
     for event in ev:
         if event.type == pygame.QUIT:
             run = False
         # todo aqui abajo se pone lo que necesite ser con click
-        if event.type == pygame.MOUSEBUTTONUP:
+        if event.type == pygame.MOUSEBUTTONDOWN:
             for rectangulo in Rectangulos:
                 rectangulo.detectarClick(mx, my)
             for cuadrado in CuadradosPlantas:
@@ -562,7 +562,10 @@ while run:
             defensanueva = rectangulo.contiene[0]
             defensas.append(defensanueva)
     for defensa in defensas:
-        defensa.atacar()
+        if not botonSig.clickeable:
+            defensa.atacar()
+        else:
+            defensa.projectiles = []
 
 
 
@@ -600,6 +603,23 @@ while run:
             Enemigos.remove(enemigo)
     #Siempre checar si el boton se puede clickear
     botonSig.yaSePuede(Enemigos)
+    for cosa in ahoritaTiene:
+        if cosa != "Quitara":
+            if cosa.nombre == "Piñata":
+                nuevacosa = Piñata(mx,my)
+                pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
+            if cosa.nombre == "Piñata2":
+                nuevacosa = Piñata2(mx,my)
+                pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
+            if cosa.nombre == "Piñata3":
+                nuevacosa = Piñata3(mx,my)
+                pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
+            if cosa.nombre == "Piñata4":
+                nuevacosa = Piñata4(mx,my)
+                pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
+            if cosa.nombre == "Piñata5":
+                nuevacosa = Piñata5(mx,my)
+                pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
     #print(mx, my)
     #print(defensas)
     pygame.time.delay(10)
