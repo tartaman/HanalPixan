@@ -6,6 +6,7 @@ width = 1280
 height = 720
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("xd wachin")
+background = pygame.transform.scale(pygame.image.load("Imagenes", "aaa.png"), (width, height))
 
 """ 
 -Hacer la pala (para quitar plantas) LISTO
