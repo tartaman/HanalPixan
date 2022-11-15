@@ -87,11 +87,14 @@ class Enemigo:
         self.velx = 1
         self.salud = 100
         self.radio = 35
+        self.color = (0, 0, 0)
         self.fila = random.randint(0, 4)
-        self.hitbox = (self.x, self.y, self.radio*2, self.radio*2)
+        self.hitbox = (self.x - self.radio, self.y-self.radio, self.radio*2, self.radio*2)
 
     def dibujar(self):
-        pygame.draw.circle(win, (0, 0, 0), (self.x, self.y), self.radio)
+        self.hitbox = (self.x-self.radio, self.y-self.radio, self.radio * 2, self.radio * 2)
+        pygame.draw.rect(win, self.color, self.hitbox, 1)
+        pygame.draw.circle(win, self.color, (self.x, self.y), self.radio)
     def mover(self):
         self.x -= self.velx
 
@@ -109,6 +112,9 @@ class Enemigo:
             self.y = 450
         if self.fila == 4:
             self.y = 550
+
+    def leDieron(self):
+        self.salud -= 10
     def seMurio(self):
         if self.salud > 0:
             return False
@@ -167,8 +173,15 @@ class Piñata:
         for projectil in self.projectiles:
             projectil.dibujar()
             projectil.mover()
+            for enemigo in Enemigos:
+                if projectil.y - projectil.radio < enemigo.hitbox[1] + enemigo.hitbox[3] and projectil.y + projectil.radio > enemigo.hitbox[1]:
+                    if projectil.x + projectil.radio > enemigo.hitbox[0] and projectil.x - projectil.radio < enemigo.hitbox[0] + enemigo.hitbox[2]:
+                        if len(self.projectiles) != 0:
+                            self.projectiles.remove(self.projectiles[0])
+                            enemigo.leDieron()
             if projectil.fuera():
                 self.projectiles.remove(projectil)
+
 
 
 class Piñata2:
@@ -190,7 +203,7 @@ class Piñata2:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
     def Cooldown(self):
-        if self.cooldown >= 60:
+        if self.cooldown >= 50:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
@@ -201,9 +214,14 @@ class Piñata2:
         for projectil in self.projectiles:
             projectil.dibujar()
             projectil.mover()
+            for enemigo in Enemigos:
+                if projectil.y - projectil.radio < enemigo.hitbox[1] + enemigo.hitbox[3] and projectil.y + projectil.radio > enemigo.hitbox[1]:
+                    if projectil.x + projectil.radio > enemigo.hitbox[0] and projectil.x - projectil.radio < enemigo.hitbox[0] + enemigo.hitbox[2]:
+                        if len(self.projectiles) != 0:
+                            self.projectiles.remove(self.projectiles[0])
+                            enemigo.leDieron()
             if projectil.fuera():
                 self.projectiles.remove(projectil)
-
 
 class Piñata3:
     def __init__(self, x, y):
@@ -224,7 +242,7 @@ class Piñata3:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
     def Cooldown(self):
-        if self.cooldown >= 60:
+        if self.cooldown >= 40:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
@@ -235,6 +253,12 @@ class Piñata3:
         for projectil in self.projectiles:
             projectil.dibujar()
             projectil.mover()
+            for enemigo in Enemigos:
+                if projectil.y - projectil.radio < enemigo.hitbox[1] + enemigo.hitbox[3] and projectil.y + projectil.radio > enemigo.hitbox[1]:
+                    if projectil.x + projectil.radio > enemigo.hitbox[0] and projectil.x - projectil.radio < enemigo.hitbox[0] + enemigo.hitbox[2]:
+                        if len(self.projectiles) != 0:
+                            self.projectiles.remove(self.projectiles[0])
+                            enemigo.leDieron()
             if projectil.fuera():
                 self.projectiles.remove(projectil)
 
@@ -258,7 +282,7 @@ class Piñata4:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
     def Cooldown(self):
-        if self.cooldown >= 60:
+        if self.cooldown >= 30:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
@@ -269,9 +293,14 @@ class Piñata4:
         for projectil in self.projectiles:
             projectil.dibujar()
             projectil.mover()
+            for enemigo in Enemigos:
+                if projectil.y - projectil.radio < enemigo.hitbox[1] + enemigo.hitbox[3] and projectil.y + projectil.radio > enemigo.hitbox[1]:
+                    if projectil.x + projectil.radio > enemigo.hitbox[0] and projectil.x - projectil.radio < enemigo.hitbox[0] + enemigo.hitbox[2]:
+                        if len(self.projectiles) != 0:
+                            self.projectiles.remove(self.projectiles[0])
+                            enemigo.leDieron()
             if projectil.fuera():
                 self.projectiles.remove(projectil)
-
 
 class Piñata5:
     def __init__(self, x, y):
@@ -292,7 +321,7 @@ class Piñata5:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
     def Cooldown(self):
-        if self.cooldown >= 60:
+        if self.cooldown >= 20:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
@@ -303,9 +332,14 @@ class Piñata5:
         for projectil in self.projectiles:
             projectil.dibujar()
             projectil.mover()
+            for enemigo in Enemigos:
+                if projectil.y - projectil.radio < enemigo.hitbox[1] + enemigo.hitbox[3] and projectil.y + projectil.radio > enemigo.hitbox[1]:
+                    if projectil.x + projectil.radio > enemigo.hitbox[0] and projectil.x - projectil.radio < enemigo.hitbox[0] + enemigo.hitbox[2]:
+                        if len(self.projectiles) != 0:
+                            self.projectiles.remove(self.projectiles[0])
+                            enemigo.leDieron()
             if projectil.fuera():
                 self.projectiles.remove(projectil)
-
 
 class RectanguloPlantas:
     def __init__(self, x, y):
@@ -567,6 +601,6 @@ while run:
     #Siempre checar si el boton se puede clickear
     botonSig.yaSePuede(Enemigos)
     #print(mx, my)
-    print(defensas)
+    #print(defensas)
     pygame.time.delay(10)
     pygame.display.update()
