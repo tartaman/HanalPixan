@@ -1,17 +1,18 @@
 import pygame
 import random
+import os.path
 
 pygame.init()
 width = 1280
 height = 720
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("xd wachin")
-background = pygame.transform.scale(pygame.image.load("Imagenes", "aaa.png"), (width, height))
+background = pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes", "aaa.png")), (width, height))
 
 """ 
 -Hacer la pala (para quitar plantas) LISTO
 - Crear varias plantas y que se ordenen según el cuadrado LISTO
-falta:
+falta:,
 
 - Que disparen 
 -Crear enemigos EN PROCESO
@@ -487,8 +488,8 @@ class RectanguloClaro:
             self.contiene[0].dibujarDefensa()
 
 
-verdefosfo = (79, 222, 59)
-verdeoscuro = (28, 184, 6)
+verdefosfo = (255, 255, 255)
+verdeoscuro = (255, 255, 255)
 
 mx, my = pygame.mouse.get_pos()
 
@@ -524,7 +525,7 @@ while run:
                 cuadrado.detectarClick(mx, my)
             cuadroPala.detectarClick(mx, my)
             botonSig.detectarClick(mx, my)
-
+    win.blit(background, (0, 0))
     # Crear cuadricula
     if len(Rectangulos) == 0:
         i = 0
