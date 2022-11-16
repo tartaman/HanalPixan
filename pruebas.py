@@ -87,7 +87,7 @@ class Enemigo:
         self.velx = 1
         self.salud = 100
         self.radio = 35
-        self.color = (0, 0, 0)
+        self.color = (255, 0, 0)
         self.fila = random.randint(0, 4)
         self.hitbox = (self.x - self.radio, self.y-self.radio, self.radio*2, self.radio*2)
 
@@ -570,7 +570,6 @@ while run:
 
 
     # Dibujar cuadro plantas
-    rectanguloPlantas.dibujarRectangulo()
     if len(CuadradosPlantas) == 0:
         i = 0
         for x in range(457, 853 - 75, 75):
