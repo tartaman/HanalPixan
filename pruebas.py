@@ -488,6 +488,10 @@ class RectanguloClaro:
             self.contiene[0].dibujarDefensa()
 
 
+
+def dibujar_cosas():
+    win.blit(background, (0, 0))
+
 verdefosfo = (255, 255, 255)
 verdeoscuro = (255, 255, 255)
 
@@ -514,7 +518,7 @@ while run:
     win.fill((0, 0, 0))
     mx, my = pygame.mouse.get_pos()
     ev = pygame.event.get()
-    win.blit(background, (0, 0))
+    dibujar_cosas()
     for event in ev:
         if event.type == pygame.QUIT:
             run = False
