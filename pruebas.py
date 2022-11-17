@@ -401,6 +401,7 @@ class calaveras:
         self.hitbox = (self.x-self.radio, self.y-self.radio, self.radio*2, self.radio*2)
         self.mx = mx
         self.my = my
+        self.click = False
     def dibujar_sol(self):
         self.hitbox = (self.x-self.radio, self.y-self.radio, self.radio*2, self.radio*2)
         pygame.draw.circle(win, (255, 255, 255), (self.x, self.y, ), self.radio)
@@ -417,12 +418,11 @@ class calaveras:
         else:
             self.cooldown += 1
 
-    def detectar_click(self, mx, my, recursos):
+    def detectar_click(self, mx, my):
         if (self.y + self.radio) > my > (self.y - self.radio):
             if self.x - self.radio < mx < (self.x + self.radio):
-                recursos += 50
-                print(f"ahora tiene {recursos} soles")
-        return recursos
+                self.click = True
+        return self.click
 
 
 class RectanguloPlantas:
@@ -550,6 +550,7 @@ rectanguloPlantas = RectanguloPlantas(((width - (width // 3)) // 2), 0)
 cuadroPala = CuadroPala(0, 0)
 botonSig = BotonSig()
 recursos = 0
+click = False
 while run:
 
     win.fill((0, 0, 0))
@@ -566,7 +567,11 @@ while run:
             for cuadrado in CuadradosPlantas:
                 cuadrado.detectarClick(mx, my)
             for solesitos in soles:
-                solesitos.detectar_click(mx, my, recursos)
+                click = solesitos.detectar_click(mx, my)
+
+            if (click):
+                recursos += 50
+                print(f"ahora tiene {recursos} soles")
             cuadroPala.detectarClick(mx, my)
             botonSig.detectarClick(mx, my)
 
