@@ -614,16 +614,16 @@ while run:
             if cosa.nombre == "Piñata":
                 nuevacosa = Piñata(mx,my)
                 pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
-            if cosa.nombre == "Piñata2":
+            elif cosa.nombre == "Piñata2":
                 nuevacosa = Piñata2(mx,my)
                 pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
-            if cosa.nombre == "Piñata3":
+            elif cosa.nombre == "Piñata3":
                 nuevacosa = Piñata3(mx,my)
                 pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
-            if cosa.nombre == "Piñata4":
+            elif cosa.nombre == "Piñata4":
                 nuevacosa = Piñata4(mx,my)
                 pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
-            if cosa.nombre == "Piñata5":
+            elif cosa.nombre == "Piñata5":
                 nuevacosa = Piñata5(mx,my)
                 pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
     #print(mx, my)
