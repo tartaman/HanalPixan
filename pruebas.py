@@ -178,7 +178,10 @@ class Piñata:
                 if projectil.y - projectil.radio < enemigo.hitbox[1] + enemigo.hitbox[3] and projectil.y + projectil.radio > enemigo.hitbox[1]:
                     if projectil.x + projectil.radio > enemigo.hitbox[0] and projectil.x - projectil.radio < enemigo.hitbox[0] + enemigo.hitbox[2]:
                         if len(self.projectiles) != 0:
-                            self.projectiles.remove(projectil)
+                            try:
+                                self.projectiles.remove(projectil)
+                            except:
+                                pass
                             enemigo.leDieron()
             if projectil.fuera():
                 self.projectiles.remove(projectil)
@@ -626,4 +629,5 @@ while run:
                 nuevacosa = Piñata5(mx,my)
                 pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
     print(mx, my)
+    pygame.time.delay(10)
     pygame.display.update()
