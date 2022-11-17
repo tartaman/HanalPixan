@@ -123,6 +123,10 @@ class Enemigo:
         else:
             return True
 
+    def leDioAAlgo(self):
+        for defensa in defensas:
+            
+
 class CuadroPala:
     def __init__(self, x, y):
         self.x = x
@@ -190,10 +194,12 @@ class Piñata:
 
     def semurio(self):
         if self.vida <= 0:
-            return T
-            ue
+            return True
         elif self.vida > 0:
             return False
+
+    def leDieron(self):
+        self.vida -= 5
 
 
 
@@ -242,6 +248,8 @@ class Piñata2:
             return True
         elif self.vida > 0:
             return False
+    def leDieron(self):
+        self.vida -= 5
 
 class Piñata3:
     def __init__(self, x, y):
@@ -285,10 +293,11 @@ class Piñata3:
 
     def semurio(self):
         if self.vida <= 0:
-            return T
-            ue
+            return True
         elif self.vida > 0:
             return False
+    def leDieron(self):
+        self.vida -= 5
 
 
 class Piñata4:
@@ -333,10 +342,11 @@ class Piñata4:
 
     def semurio(self):
         if self.vida <= 0:
-            return T
-            ue
+            return True
         elif self.vida > 0:
             return False
+    def leDieron(self):
+        self.vida -= 5
 
 class Piñata5:
     def __init__(self, x, y):
@@ -382,6 +392,9 @@ class Piñata5:
                 return True
             elif self.vida > 0:
                 return False
+
+        def leDieron(self):
+            self.vida -= 5
 class calaveras:
     def __init__(self):
         self.x = random.randint(0, 115)
