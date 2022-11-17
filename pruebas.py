@@ -407,7 +407,7 @@ class CuadroPlantas:
 
 class RectanguloOscuro:
     def __init__(self, x, y, columna, fila, indice):
-        self.color = verdeoscuro
+        self.color = (0, 0, 0)
         self.width = ((width - 450) // 9)
         self.height = ((height - 200) // 5)
         self.x = x
@@ -446,56 +446,8 @@ class RectanguloOscuro:
             self.contiene[0].y = self.y + self.height // 2
             self.contiene[0].dibujarDefensa()
 
-
-
-class RectanguloClaro:
-    def __init__(self, x, y, columna, fila, indice):
-        self.color = verdefosfo
-        self.width = ((width - 450) // 9)
-        self.height = ((height - 200) // 5)
-        self.x = x
-        self.y = y
-        self.columna = columna
-        self.fila = fila
-        self.indice = indice
-        self.contiene = []
-
-    def dibujar(self):
-        pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height),1)
-
-    def detectarClick(self, mx, my):
-        if (self.y + self.height) > my > self.y:
-            if self.x < mx < (self.x + self.width):
-                print(
-                    f"hizo click en el cuadrado de la columna {self.columna}, fila {self.fila}. indice: {self.indice}, contiene {self.contiene}")
-                # si tienes algo en el mouse y la casilla no contiene nada:
-                if ahoritaTiene != [] and self.contiene == [] and ahoritaTiene[0] != "Quitara":
-                    self.contiene.append(ahoritaTiene[0])
-                    ahoritaTiene.pop(0)
-                    print(f"ahorita tiene: {ahoritaTiene}")
-                if len(ahoritaTiene) != 0:
-                    if ahoritaTiene[0] == "Quitara" and self.contiene != []:
-                        defensas.remove(self.contiene[0])
-                        self.contiene.remove(self.contiene[0])
-                        print("lo quito")
-                    if ahoritaTiene[0] == "Quitara" and self.contiene == []:
-                        ahoritaTiene.pop()
-                        print(f"Ahorita tiene {ahoritaTiene}")
-
-    def mostrarLoQueContiene(self):
-        if self.contiene != []:
-            # cambiar las coordenadas
-            self.contiene[0].x = self.x + self.width // 2
-            self.contiene[0].y = self.y + self.height // 2
-            self.contiene[0].dibujarDefensa()
-
-
-
 def dibujar_cosas():
     win.blit(background, (0, 0))
-
-verdefosfo = (255, 255, 255)
-verdeoscuro = (255, 255, 255)
 
 mx, my = pygame.mouse.get_pos()
 
@@ -539,30 +491,11 @@ while run:
         columna = 0
         fila = 0
         for y in range(100, height - 100, (height - 200) // 5):
-            if fila % 2 == 0:
                 for x in range(200, width - 250, (width - 450) // 9):
-                    if columna % 2 == 0:
-                        Rectangulos.append(RectanguloClaro(x, y, columna, fila, i))
-                        columna += 1
-                        i += 1
-                    else:
                         Rectangulos.append(RectanguloOscuro(x, y, columna, fila, i))
                         columna += 1
                         i += 1
                 fila += 1
-            else:
-                for x in range(200, width - 250, (width - 450) // 9):
-                    if columna % 2 == 0:
-                        Rectangulos.append(RectanguloOscuro(x, y, columna, fila, i))
-                        columna += 1
-                        i += 1
-                    else:
-                        Rectangulos.append(RectanguloClaro(x, y, columna, fila, i))
-                        columna += 1
-                        i += 1
-                fila += 1
-            if columna >= 9:
-                columna = 0
 
     for rectangulo in Rectangulos:
         rectangulo.dibujar()
