@@ -125,7 +125,7 @@ class Enemigo:
 
     def leDioAAlgo(self):
         for defensa in defensas:
-            
+            if self.x == defensa.x + defensa.radius and self.fila == defensa.fila:
 
 class CuadroPala:
     def __init__(self, x, y):
@@ -148,10 +148,11 @@ class CuadroPala:
 
 
 class Piñata:
-    def __init__(self, x, y):
+    def __init__(self, x, y, fila= -3):
         self.x = x
         self.y = y
         self.image = ""
+        self.fila = fila
         # radio por ahora pq ajam
         self.radius = 35
         self.color = (255, 0, 0)
@@ -504,6 +505,7 @@ class RectanguloOscuro:
                 # si tienes algo en el mouse y la casilla no contiene nada:
                 if ahoritaTiene != [] and self.contiene == [] and ahoritaTiene[0] != "Quitara":
                     self.contiene.append(ahoritaTiene[0])
+                    self.contiene[0].fila = self.fila
                     ahoritaTiene.pop(0)
                     print(f"ahorita tiene: {ahoritaTiene}")
                 if len(ahoritaTiene) != 0:
