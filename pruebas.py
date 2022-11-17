@@ -394,17 +394,24 @@ class Piñata5:
             self.vida -= 5
 class calaveras:
     def __init__(self):
-        self.x = random.randint(0, 115)
+        self.x = random.randint(15, 115)
         self.y = random.randint(161, 478)
         self.radio = 15
         self.cooldown = 0
         self.hitbox = (self.x-self.radio, self.y-self.radio, self.radio*2, self.radio*2)
         self.mx = mx
         self.my = my
+        self.vely =5
         self.click = False
     def dibujar_sol(self):
         self.hitbox = (self.x-self.radio, self.y-self.radio, self.radio*2, self.radio*2)
         pygame.draw.circle(win, (255, 255, 255), (self.x, self.y, ), self.radio)
+        self.y -= self.vely * 2
+        self.vely -= 1
+        if self.vely < -5:
+            self.vely = 5
+
+    def direction(self):
         pygame.draw.rect(win, (0, 0, 0), pygame.Rect(self.hitbox), 1)
     def generar_sol(self):
         self.Cooldown()
@@ -412,6 +419,7 @@ class calaveras:
             if self.cooldown == 0:
                 soles.append(calaveras())
                 print("se genero sol xd")
+
     def Cooldown(self):
         if self.cooldown >= 100:
             self.cooldown = 0
@@ -568,10 +576,11 @@ while run:
                 cuadrado.detectarClick(mx, my)
             for solesitos in soles:
                 click = solesitos.detectar_click(mx, my)
+                if (click):
+                    recursos += 50
+                    print(f"ahora tiene {recursos} soles")
+                    soles.remove(solesitos)
 
-            if (click):
-                recursos += 50
-                print(f"ahora tiene {recursos} soles")
             cuadroPala.detectarClick(mx, my)
             botonSig.detectarClick(mx, my)
 
@@ -655,5 +664,6 @@ while run:
     for sol in soles:
         sol.generar_sol()
         sol.dibujar_sol()
+
     pygame.time.delay(10)
     pygame.display.update()
