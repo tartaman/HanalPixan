@@ -123,9 +123,6 @@ class Enemigo:
         else:
             return True
 
-    def leDioAAlgo(self):
-        for defensa in defensas:
-            
 
 class CuadroPala:
     def __init__(self, x, y):
@@ -402,6 +399,8 @@ class calaveras:
         self.radio = 15
         self.cooldown = 0
         self.hitbox = (self.x-self.radio, self.y-self.radio, self.radio*2, self.radio*2)
+        self.mx = mx
+        self.my = my
     def dibujar_sol(self):
         self.hitbox = (self.x-self.radio, self.y-self.radio, self.radio*2, self.radio*2)
         pygame.draw.circle(win, (255, 255, 255), (self.x, self.y, ), self.radio)
@@ -418,7 +417,12 @@ class calaveras:
         else:
             self.cooldown += 1
 
-
+    def detectar_click(self, mx, my, recursos):
+        if (self.y + self.radio) > my > (self.y - self.radio):
+            if self.x - self.radio < mx < (self.x + self.radio):
+                recursos += 50
+                print(f"ahora tiene {recursos} soles")
+        return recursos
 
 
 class RectanguloPlantas:
@@ -540,11 +544,14 @@ ahoritaTiene = []
 
 defensas = []
 soles = [calaveras()]
+
 cosasEnRectangulos = 0
 rectanguloPlantas = RectanguloPlantas(((width - (width // 3)) // 2), 0)
 cuadroPala = CuadroPala(0, 0)
 botonSig = BotonSig()
+recursos = 0
 while run:
+
     win.fill((0, 0, 0))
     mx, my = pygame.mouse.get_pos()
     ev = pygame.event.get()
@@ -558,6 +565,8 @@ while run:
                 rectangulo.detectarClick(mx, my)
             for cuadrado in CuadradosPlantas:
                 cuadrado.detectarClick(mx, my)
+            for solesitos in soles:
+                solesitos.detectar_click(mx, my, recursos)
             cuadroPala.detectarClick(mx, my)
             botonSig.detectarClick(mx, my)
 
@@ -637,6 +646,9 @@ while run:
             elif cosa.nombre == "Piñata5":
                 nuevacosa = Piñata5(mx,my)
                 pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
-    print(mx, my)
+    #soles
+    for sol in soles:
+        sol.generar_sol()
+        sol.dibujar_sol()
     pygame.time.delay(10)
     pygame.display.update()
