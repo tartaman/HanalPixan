@@ -8,7 +8,6 @@ height = 720
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("xd wachin")
 background = pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes", "aaa.png")), (width, height))
-
 """ 
 -Hacer la pala (para quitar plantas) LISTO
 - Crear varias plantas y que se ordenen según el cuadrado LISTO
@@ -626,6 +625,5 @@ while run:
             if cosa.nombre == "Piñata5":
                 nuevacosa = Piñata5(mx,my)
                 pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
-    #print(mx, my)
-    #print(defensas)
+    print(mx, my)
     pygame.display.update()
