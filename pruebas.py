@@ -284,7 +284,7 @@ class Piñata4:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
     def Cooldown(self):
-        if self.cooldown >= 30:
+        if self.cooldown >= 10:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
@@ -380,16 +380,16 @@ class CuadroPlantas:
                     if self.contains[self.indice].nombre == "Piñata":
                         defensa = Piñata(self.contains[self.indice].x, self.contains[self.indice].y)
                         ahoritaTiene.append(defensa)
-                    if self.contains[self.indice].nombre == "Piñata2":
+                    elif self.contains[self.indice].nombre == "Piñata2":
                         defensa = Piñata2(self.contains[self.indice].x, self.contains[self.indice].y)
                         ahoritaTiene.append(defensa)
-                    if self.contains[self.indice].nombre == "Piñata3":
+                    elif self.contains[self.indice].nombre == "Piñata3":
                         defensa = Piñata3(self.contains[self.indice].x, self.contains[self.indice].y)
                         ahoritaTiene.append(defensa)
-                    if self.contains[self.indice].nombre == "Piñata4":
+                    elif self.contains[self.indice].nombre == "Piñata4":
                         defensa = Piñata4(self.contains[self.indice].x, self.contains[self.indice].y)
                         ahoritaTiene.append(defensa)
-                    if self.contains[self.indice].nombre == "Piñata5":
+                    elif self.contains[self.indice].nombre == "Piñata5":
                         defensa = Piñata5(self.contains[self.indice].x, self.contains[self.indice].y)
                         ahoritaTiene.append(defensa)
                     print(f"ahorita tiene: {ahoritaTiene}")
@@ -623,5 +623,4 @@ while run:
                 pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
     #print(mx, my)
     #print(defensas)
-    pygame.time.delay(10)
     pygame.display.update()
