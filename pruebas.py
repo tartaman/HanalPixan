@@ -106,13 +106,13 @@ class Enemigo:
         """"como no hay switch pos ajam puro if"""
         if self.fila == 0:
             self.y = 150
-        if self.fila == 1:
+        elif self.fila == 1:
             self.y = 250
-        if self.fila == 2:
+        elif self.fila == 2:
             self.y = 350
-        if self.fila == 3:
+        elif self.fila == 3:
             self.y = 450
-        if self.fila == 4:
+        elif self.fila == 4:
             self.y = 550
 
     def leDieron(self):
@@ -377,13 +377,36 @@ class Piñata5:
                             enemigo.leDieron()
             if projectil.fuera():
                 self.projectiles.remove(projectil)
+        def semurio(self):
+            if self.vida <= 0:
+                return True
+            elif self.vida > 0:
+                return False
+class calaveras:
+    def __init__(self):
+        self.x = random.randint(0, 115)
+        self.y = random.randint(161, 478)
+        self.radio = 15
+        self.cooldown = 0
+        self.hitbox = (self.x-self.radio, self.y-self.radio, self.radio*2, self.radio*2)
+    def dibujar_sol(self):
+        self.hitbox = (self.x-self.radio, self.y-self.radio, self.radio*2, self.radio*2)
+        pygame.draw.circle(win, (255, 255, 255), (self.x, self.y, ), self.radio)
+        pygame.draw.rect(win, (0, 0, 0), pygame.Rect(self.hitbox), 1)
+    def generar_sol(self):
+        self.Cooldown()
+        if len(soles) <= 3:
+            if self.cooldown == 0:
+                soles.append(calaveras())
+                print("se genero sol xd")
+    def Cooldown(self):
+        if self.cooldown >= 100:
+            self.cooldown = 0
+        else:
+            self.cooldown += 1
 
-    def semurio(self):
-        if self.vida <= 0:
-            return T
-            ue
-        elif self.vida > 0:
-            return False
+
+
 
 class RectanguloPlantas:
     def __init__(self, x, y):
@@ -503,7 +526,7 @@ Enemigos = []
 ahoritaTiene = []
 
 defensas = []
-
+soles = [calaveras()]
 cosasEnRectangulos = 0
 rectanguloPlantas = RectanguloPlantas(((width - (width // 3)) // 2), 0)
 cuadroPala = CuadroPala(0, 0)
@@ -601,9 +624,6 @@ while run:
             elif cosa.nombre == "Piñata5":
                 nuevacosa = Piñata5(mx,my)
                 pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
-        else:
-            pygame.draw.circle(win, (0,0 , 0), (mx, my), 25)
-    #print(mx, my)
-    clock.tick(30)
-    print(int(clock.get_fps()))
+    print(mx, my)
+    pygame.time.delay(10)
     pygame.display.update()
