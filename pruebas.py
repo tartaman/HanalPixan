@@ -5,6 +5,7 @@ import os.path
 pygame.init()
 width = 1280
 height = 720
+clock = pygame.time.Clock()
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("xd wachin")
 background = pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes", "aaa.png")), (width, height))
@@ -153,6 +154,7 @@ class Piñata:
         self.projectiles = []
         self.cooldown = 0
         self.daño = 10
+        self.vida = 100
         self.nombre = "Piñata"
 
     def dibujarDefensa(self):
@@ -186,6 +188,13 @@ class Piñata:
             if projectil.fuera():
                 self.projectiles.remove(projectil)
 
+    def semurio(self):
+        if self.vida <= 0:
+            return T
+            ue
+        elif self.vida > 0:
+            return False
+
 
 
 class Piñata2:
@@ -199,6 +208,7 @@ class Piñata2:
         self.projectiles = []
         self.cooldown = 0
         self.daño = 10
+        self.vida = 100
         self.nombre = "Piñata2"
     def dibujarDefensa(self):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
@@ -227,6 +237,12 @@ class Piñata2:
             if projectil.fuera():
                 self.projectiles.remove(projectil)
 
+    def semurio(self):
+        if self.vida <= 0:
+            return True
+        elif self.vida > 0:
+            return False
+
 class Piñata3:
     def __init__(self, x, y):
         self.x = x
@@ -238,6 +254,7 @@ class Piñata3:
         self.projectiles = []
         self.cooldown = 0
         self.daño = 10
+        self.vida = 100
         self.nombre = "Piñata3"
     def dibujarDefensa(self):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
@@ -266,6 +283,13 @@ class Piñata3:
             if projectil.fuera():
                 self.projectiles.remove(projectil)
 
+    def semurio(self):
+        if self.vida <= 0:
+            return T
+            ue
+        elif self.vida > 0:
+            return False
+
 
 class Piñata4:
     def __init__(self, x, y):
@@ -278,6 +302,7 @@ class Piñata4:
         self.projectiles = []
         self.cooldown = 0
         self.daño = 10
+        self.vida = 100
         self.nombre = "Piñata4"
     def dibujarDefensa(self):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
@@ -306,6 +331,13 @@ class Piñata4:
             if projectil.fuera():
                 self.projectiles.remove(projectil)
 
+    def semurio(self):
+        if self.vida <= 0:
+            return T
+            ue
+        elif self.vida > 0:
+            return False
+
 class Piñata5:
     def __init__(self, x, y):
         self.x = x
@@ -317,6 +349,7 @@ class Piñata5:
         self.projectiles = []
         self.cooldown = 0
         self.daño = 10
+        self.vida = 100
         self.nombre = "Piñata5"
     def dibujarDefensa(self):
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
@@ -344,6 +377,13 @@ class Piñata5:
                             enemigo.leDieron()
             if projectil.fuera():
                 self.projectiles.remove(projectil)
+
+    def semurio(self):
+        if self.vida <= 0:
+            return T
+            ue
+        elif self.vida > 0:
+            return False
 
 class RectanguloPlantas:
     def __init__(self, x, y):
@@ -561,6 +601,9 @@ while run:
             elif cosa.nombre == "Piñata5":
                 nuevacosa = Piñata5(mx,my)
                 pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
-    print(mx, my)
-    pygame.time.delay(10)
+        else:
+            pygame.draw.circle(win, (0,0 , 0), (mx, my), 25)
+    #print(mx, my)
+    clock.tick(30)
+    print(int(clock.get_fps()))
     pygame.display.update()
