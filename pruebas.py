@@ -514,6 +514,7 @@ while run:
     win.fill((0, 0, 0))
     mx, my = pygame.mouse.get_pos()
     ev = pygame.event.get()
+    win.blit(background, (0, 0))
     for event in ev:
         if event.type == pygame.QUIT:
             run = False
@@ -525,7 +526,7 @@ while run:
                 cuadrado.detectarClick(mx, my)
             cuadroPala.detectarClick(mx, my)
             botonSig.detectarClick(mx, my)
-    win.blit(background, (0, 0))
+
     # Crear cuadricula
     if len(Rectangulos) == 0:
         i = 0
