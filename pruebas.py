@@ -16,7 +16,7 @@ width = 1280
 height = 720
 clock = pygame.time.Clock()
 win = pygame.display.set_mode((width, height))
-pygame.display.set_caption("xd wachin")
+pygame.display.set_caption("Alpha")
 background = pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes", "aaa.png")), (width, height))
 mx, my = pygame.mouse.get_pos()
 Rectangulos = []
@@ -436,7 +436,7 @@ class Piñata4:
         self.vida -= daño
 
 
-class Piñata5:
+class Girasol:
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -444,14 +444,15 @@ class Piñata5:
         # radio por ahora pq ajam
         self.radius = 35
         self.color = (0, 255, 255)
-        self.projectiles = []
+        self.solecitos = []
         self.cooldown = 0
-        self.daño = 10
         self.vida = 100
-        self.nombre = "Piñata5"
+        self.nombre = "Girasol"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         self.precio = 50
-        self.soles = 0
+        self.radio = 15
+        self.vely = 5
+
 
     def sepuede(self, soles):
         self.soles = soles
@@ -475,21 +476,19 @@ class Piñata5:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
-    def atacar(self):
+
+    def generar(self):
         self.Cooldown()
         if self.cooldown == 0:
-            self.projectiles.append(Projectil(self.x, self.y))
-        for projectil in self.projectiles:
-            projectil.dibujar()
-            projectil.mover()
-            for enemigo in Enemigos:
-                if projectil.y - projectil.radio < enemigo.hitbox[1] + enemigo.hitbox[3] and projectil.y + projectil.radio > enemigo.hitbox[1]:
-                    if projectil.x + projectil.radio > enemigo.hitbox[0] and projectil.x - projectil.radio < enemigo.hitbox[0] + enemigo.hitbox[2]:
-                        if len(self.projectiles) != 0:
-                            self.projectiles.remove(self.projectiles[0])
-                            enemigo.leDieron(self.daño)
-            if projectil.fuera():
-                self.projectiles.remove(projectil)
+            if len(soles) <= 3:
+                self.hitbox = (self.x - self.radio, self.y - self.radio, self.radio * 2, self.radio * 2)
+                pygame.draw.circle(win, (255, 255, 255), (self.x, self.y,), self.radio)
+                soles.append(calaveras())
+                self.y -= self.vely * 2
+                self.vely -= 1
+                if self.vely < -5:
+                    self.vely = 5
+
     def semurio(self):
         if self.vida <= 0:
             return True
@@ -607,9 +606,9 @@ class CuadroPlantas:
                             recursos -= defensa.precio
                             ahoritaTiene.append(defensa)
 
-                    elif self.contains[self.indice].nombre == "Piñata5":
-                        defensa = Piñata5(self.contains[self.indice].x, self.contains[self.indice].y)
-                        if recursos > defensa.precio:
+                    elif self.contains[self.indice].nombre == "Girasol":
+                        defensa = Girasol(self.contains[self.indice].x, self.contains[self.indice].y)
+                        if recursos >= defensa.precio:
                             recursos -= defensa.precio
                             ahoritaTiene.append(defensa)
 
@@ -674,7 +673,7 @@ class RectanguloOscuro:
 def dibujar_cosas():
     win.blit(background, (0, 0))
 defensasEscogidas = [Piñata(-100, -100), Piñata2(-100, -100), Piñata3(-100, -100), Piñata4(-100, -100),
-                     Piñata5(-100, -100)]
+                     Girasol(-100, -100)]
 
 
 # todo crear enemigos
@@ -790,8 +789,8 @@ while run:
                 nuevacosa = Piñata3(mx,my)
             elif cosa.nombre == "Piñata4":
                 nuevacosa = Piñata4(mx,my)
-            elif cosa.nombre == "Piñata5":
-                nuevacosa = Piñata5(mx,my)
+            elif cosa.nombre == "Girasol":
+                nuevacosa = Girasol(mx,my)
             nuevacosa.dibujarDefensa()
         else:
             pygame.draw.circle(win, (0, 0, 0), (mx, my), 25)
