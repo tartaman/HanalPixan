@@ -246,7 +246,6 @@ class Piñata:
         self.vida -= daño
 
 
-
 class Piñata2:
     def __init__(self, x, y):
         self.x = x
@@ -261,6 +260,19 @@ class Piñata2:
         self.vida = 100
         self.nombre = "Piñata2"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
+        self.precio = 50
+        self.soles = 0
+
+    def sepuede(self, soles):
+        self.soles = soles
+        if self.soles >= self.precio:
+            return True
+        else:
+            return False
+    def comprada(self, soles):
+        self.soles = soles
+        self.soles =- self.precio
+        return self.soles
     def dibujarDefensa(self):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
@@ -314,6 +326,18 @@ class Piñata3:
         self.vida = 100
         self.nombre = "Piñata3"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
+        self.precio = 50
+        self.soles = 0
+    def sepuede(self, soles):
+        self.soles = soles
+        if self.soles >= self.precio:
+            return True
+        else:
+            return False
+    def comprada(self, soles):
+        self.soles = soles
+        self.soles =- self.precio
+        return self.soles
     def dibujarDefensa(self):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
@@ -365,6 +389,18 @@ class Piñata4:
         self.vida = 100
         self.nombre = "Piñata4"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
+        self.precio = 50
+        self.soles = 0
+    def sepuede(self, soles):
+        self.soles = soles
+        if self.soles >= self.precio:
+            return True
+        else:
+            return False
+    def comprada(self, soles):
+        self.soles = soles
+        self.soles =- self.precio
+        return self.soles
     def dibujarDefensa(self):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
@@ -415,6 +451,19 @@ class Piñata5:
         self.vida = 100
         self.nombre = "Piñata5"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
+        self.precio = 50
+        self.soles = 0
+
+    def sepuede(self, soles):
+        self.soles = soles
+        if self.soles >= self.precio:
+            return True
+        else:
+            return False
+    def comprada(self, soles):
+        self.soles = soles
+        self.soles =- self.precio
+        return self.soles
     def dibujarDefensa(self):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
@@ -450,6 +499,10 @@ class Piñata5:
 
     def leDieron(self, daño):
         self.vida -= daño
+
+class null:
+    def sepuede(self):
+        return False
 class calaveras:
     def __init__(self):
         self.x = random.randint(15, 115)
@@ -527,19 +580,19 @@ class CuadroPlantas:
                     # todo Crea un objeto nuevo fuera de la pantalla para agregar necesitamos if que digan que planta es para ponerla
                     if self.contains[self.indice].nombre == "Piñata":
                         defensa = Piñata(self.contains[self.indice].x, self.contains[self.indice].y)
-                        ahoritaTiene.append(defensa)
+
                     elif self.contains[self.indice].nombre == "Piñata2":
                         defensa = Piñata2(self.contains[self.indice].x, self.contains[self.indice].y)
-                        ahoritaTiene.append(defensa)
+
                     elif self.contains[self.indice].nombre == "Piñata3":
                         defensa = Piñata3(self.contains[self.indice].x, self.contains[self.indice].y)
-                        ahoritaTiene.append(defensa)
+
                     elif self.contains[self.indice].nombre == "Piñata4":
                         defensa = Piñata4(self.contains[self.indice].x, self.contains[self.indice].y)
-                        ahoritaTiene.append(defensa)
+
                     elif self.contains[self.indice].nombre == "Piñata5":
                         defensa = Piñata5(self.contains[self.indice].x, self.contains[self.indice].y)
-                        ahoritaTiene.append(defensa)
+                    ahoritaTiene.append(defensa)
                     print(f"ahorita tiene: {ahoritaTiene}")
                 if ahoritaTiene[0] == "Quitara":
                     ahoritaTiene.pop()
@@ -721,13 +774,13 @@ while run:
                 nuevacosa = Piñata4(mx,my)
             elif cosa.nombre == "Piñata5":
                 nuevacosa = Piñata5(mx,my)
-
-            if nuevacosa.sepuede(recursos):
+        if nuevacosa.sepuede(recursos):
                 recursos = nuevacosa.comprada(recursos)
                 pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
-            else:
-                nuevacosa = ""
+        else:
                 print("No se puede comprar")
+
+
     #soles
     for sol in soles:
         sol.generar_sol()
