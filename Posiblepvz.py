@@ -5,7 +5,7 @@ import os.path
 # todo Esto falta namas y nos podemos ir a matar
 """  
 falta:,
--Mecánicas de cada planta
+-Mecanicas de cada planta
 -Mecanicas de cada enemy
 -Que los misiles no se quiten si no hay enemigos
 Si
@@ -510,13 +510,13 @@ class calaveras:
         self.x = random.randint(15, 115)
         self.y = random.randint(161, 478)
         self.radio = 15
-        self.cooldown = 0
-        self.hitbox = (self.x-self.radio, self.y-self.radio, self.radio*2, self.radio*2)
+        self.hitbox = (self.x - self.radio, self.y - self.radio, self.radio * 2, self.radio * 2)
         self.mx = mx
         self.my = my
-        self.vely =5
+        self.vely = 5
         self.click = False
-    def dibujar_sol(self):
+
+    def saltar(self):
         self.hitbox = (self.x-self.radio, self.y-self.radio, self.radio*2, self.radio*2)
         pygame.draw.circle(win, (255, 255, 255), (self.x, self.y, ), self.radio)
         self.y -= self.vely * 2
@@ -526,18 +526,6 @@ class calaveras:
 
     def direction(self):
         pygame.draw.rect(win, (0, 0, 0), pygame.Rect(self.hitbox), 1)
-    def generar_sol(self):
-        self.Cooldown()
-        if len(soles) <= 3:
-            if self.cooldown == 0:
-                soles.append(calaveras())
-                print("se genero sol xd")
-
-    def Cooldown(self):
-        if self.cooldown >= 100:
-            self.cooldown = 0
-        else:
-            self.cooldown += 1
 
     def detectar_click(self, mx, my):
         if (self.y + self.radio) > my > (self.y - self.radio):
@@ -545,6 +533,12 @@ class calaveras:
                 self.click = True
         return self.click
 
+def generarcalaveras():
+    x = random.randint(15, 115)
+    y = random.randint(161, 478)
+    radio = 15
+    soles.append(calaveras())
+    print("se genero sol xd")
 
 #todo Cosas de la rejilla (NO TOCAR SI NO SE MUERE)
 class RectanguloPlantas:
@@ -686,7 +680,7 @@ rectanguloPlantas = RectanguloPlantas(((width - (width // 3)) // 2), 0)
 cuadroPala = CuadroPala(0, 0)
 botonSig = BotonSig()
 click = False
-
+cooldown = 0
 
 # Todo loop principal
 while run:
@@ -796,10 +790,14 @@ while run:
             pygame.draw.circle(win, (0, 0, 0), (mx, my), 25)
 
     # Todo soles
-    for sol in soles:
-        sol.generar_sol()
-        sol.dibujar_sol()
-    if len(soles) == 0:
-        soles.append(calaveras())
+    if cooldown >= 100:
+        cooldown = 0
+        generarcalaveras()
+    else:
+        cooldown += 1
+
+    for solesitos in soles:
+        solesitos.saltar()
+
     pygame.time.delay(10)
     pygame.display.update()
