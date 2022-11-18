@@ -191,7 +191,18 @@ class Piñata:
         self.vida = 100
         self.nombre = "Piñata"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius*2, self.radius*2)
-
+        self.precio = 50
+        self.soles=0
+    def sepuede(self, soles):
+        self.soles = soles
+        if self.soles >= self.precio:
+            return True
+        else:
+            return False
+    def comprada(self, soles):
+        self.soles = soles
+        self.soles =- self.precio
+        return self.soles
     def dibujarDefensa(self):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius*2, self.radius*2)
         pygame.draw.rect(win, (0, 0, 0), pygame.Rect(self.hitbox),1)
@@ -702,19 +713,21 @@ while run:
         if cosa != "Quitara":
             if cosa.nombre == "Piñata":
                 nuevacosa = Piñata(mx,my)
-                pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
             elif cosa.nombre == "Piñata2":
                 nuevacosa = Piñata2(mx,my)
-                pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
             elif cosa.nombre == "Piñata3":
                 nuevacosa = Piñata3(mx,my)
-                pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
             elif cosa.nombre == "Piñata4":
                 nuevacosa = Piñata4(mx,my)
-                pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
             elif cosa.nombre == "Piñata5":
                 nuevacosa = Piñata5(mx,my)
+
+            if nuevacosa.sepuede(recursos):
+                recursos = nuevacosa.comprada(recursos)
                 pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
+            else:
+                nuevacosa = ""
+                print("No se puede comprar")
     #soles
     for sol in soles:
         sol.generar_sol()
