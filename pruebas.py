@@ -9,6 +9,15 @@ clock = pygame.time.Clock()
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("xd wachin")
 background = pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes", "aaa.png")), (width, height))
+mx, my = pygame.mouse.get_pos()
+
+Rectangulos = []
+
+CuadradosPlantas = []
+
+recursos = 0
+
+nuevacosa = 0
 """ 
 -Hacer la pala (para quitar plantas) LISTO
 - Crear varias plantas y que se ordenen según el cuadrado LISTO
@@ -188,21 +197,11 @@ class Piñata:
         self.projectiles = []
         self.cooldown = 0
         self.daño = 10
+        self.recursos = recursos
         self.vida = 100
         self.nombre = "Piñata"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius*2, self.radius*2)
         self.precio = 50
-        self.soles=0
-    def sepuede(self, soles):
-        self.soles = soles
-        if self.soles >= self.precio:
-            return True
-        else:
-            return False
-    def comprada(self, soles):
-        self.soles = soles
-        self.soles =- self.precio
-        return self.soles
     def dibujarDefensa(self):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius*2, self.radius*2)
         pygame.draw.rect(win, (0, 0, 0), pygame.Rect(self.hitbox),1)
@@ -572,6 +571,7 @@ class CuadroPlantas:
         pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
 
     def detectarClick(self, mx, my):
+        global recursos
         if (self.y + self.height) > my > self.y:
             if self.x < mx < (self.x + self.width):
                 print(f"Escogio el cuadrado {self.indice}, que contiene {self.contains}")
@@ -580,23 +580,39 @@ class CuadroPlantas:
                     # todo Crea un objeto nuevo fuera de la pantalla para agregar necesitamos if que digan que planta es para ponerla
                     if self.contains[self.indice].nombre == "Piñata":
                         defensa = Piñata(self.contains[self.indice].x, self.contains[self.indice].y)
+                        if recursos > defensa.precio:
+                            recursos -= defensa.precio
+                            ahoritaTiene.append(defensa)
 
                     elif self.contains[self.indice].nombre == "Piñata2":
                         defensa = Piñata2(self.contains[self.indice].x, self.contains[self.indice].y)
+                        if recursos > defensa.precio:
+                            recursos -= defensa.precio
+                            ahoritaTiene.append(defensa)
 
                     elif self.contains[self.indice].nombre == "Piñata3":
                         defensa = Piñata3(self.contains[self.indice].x, self.contains[self.indice].y)
+                        if recursos > defensa.precio:
+                            recursos -= defensa.precio
+                            ahoritaTiene.append(defensa)
 
-                    elif self.contains[self.indice].nombre == "Piñata4":
+                    elif self.contains[self.indice].nombre == "Piñata4" :
                         defensa = Piñata4(self.contains[self.indice].x, self.contains[self.indice].y)
+                        if recursos > defensa.precio:
+                            recursos -= defensa.precio
+                            ahoritaTiene.append(defensa)
 
                     elif self.contains[self.indice].nombre == "Piñata5":
                         defensa = Piñata5(self.contains[self.indice].x, self.contains[self.indice].y)
-                    ahoritaTiene.append(defensa)
+                        if recursos > defensa.precio:
+                            recursos -= defensa.precio
+                            ahoritaTiene.append(defensa)
+
                     print(f"ahorita tiene: {ahoritaTiene}")
-                if ahoritaTiene[0] == "Quitara":
-                    ahoritaTiene.pop()
-                    print(f"Ahorita tiene: {ahoritaTiene}")
+                if ahoritaTiene:
+                    if ahoritaTiene[0] == "Quitara":
+                        ahoritaTiene.pop()
+                        print(f"Ahorita tiene: {ahoritaTiene}")
 
     def mostrarLoQueContiene(self):
         self.contains[self.indice].x = self.x + self.width // 2
@@ -651,13 +667,6 @@ class RectanguloOscuro:
 
 def dibujar_cosas():
     win.blit(background, (0, 0))
-
-mx, my = pygame.mouse.get_pos()
-
-Rectangulos = []
-
-CuadradosPlantas = []
-
 defensasEscogidas = [Piñata(-100, -100), Piñata2(-100, -100), Piñata3(-100, -100), Piñata4(-100, -100),
                      Piñata5(-100, -100)]
 # todo crear enemigos
@@ -672,8 +681,9 @@ cosasEnRectangulos = 0
 rectanguloPlantas = RectanguloPlantas(((width - (width // 3)) // 2), 0)
 cuadroPala = CuadroPala(0, 0)
 botonSig = BotonSig()
-recursos = 0
+
 click = False
+
 while run:
 
     win.fill((0, 0, 0))
@@ -774,17 +784,17 @@ while run:
                 nuevacosa = Piñata4(mx,my)
             elif cosa.nombre == "Piñata5":
                 nuevacosa = Piñata5(mx,my)
-        if nuevacosa.sepuede(recursos):
-                recursos = nuevacosa.comprada(recursos)
-                pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
+            nuevacosa.dibujarDefensa()
         else:
-                print("No se puede comprar")
+            pygame.draw.circle(win,(0,0,0),(mx,my),25)
+
 
 
     #soles
     for sol in soles:
         sol.generar_sol()
         sol.dibujar_sol()
-
+    if len(soles) == 0:
+        soles.append(calaveras())
     pygame.time.delay(10)
     pygame.display.update()
