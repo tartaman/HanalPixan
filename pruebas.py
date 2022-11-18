@@ -41,7 +41,23 @@ class Projectil:
     def fuera(self):
         return (self.x > width)
 
-
+class ProjectilTeledirigido(Projectil):
+    def __init__(self,x,y):
+        self.x = x
+        self.y = y
+        self.velx = 3
+        self.vely = 3
+        self.radio = 10
+        self.color = (255,255,0)
+    def dirigir(self, enemigox,enemigoy):
+        if self.x > enemigox:
+            self.x -= self.velx
+        if self.x < enemigox:
+            self.x += self.velx
+        if self.y > enemigoy:
+            self.y -= self.vely
+        if self.y < enemigoy:
+            self.y += self.vely
 class BotonSig:
     def __init__(self):
         self.x = 1150
@@ -55,11 +71,12 @@ class BotonSig:
         pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
 
     def detectarClick(self, mx, my):
+        i = 0
         if (self.y + self.height) > my > self.y:
             if self.x < mx < (self.x + self.width):
                 print("Hizo click")
-                self.Oleada += 1
                 if len(Enemigos) == 0 and self.clickeable:
+                    self.Oleada += 1
                     #si se puede clickear significa que acabo la oleada
                     self.clickeable = False
                     # 5 enemigos por oleada
@@ -69,7 +86,8 @@ class BotonSig:
                         # Lo que vamos a hacer es que cuando el enemigo muera, lo quitamos de la lista y pues muere, sabes
                         # y cuando la lista ya no tenga, va a volver a poner enemigos.
                     for enemigo in Enemigos:
-                        enemigo.x += random.randint(0, 10)*35
+                        enemigo.x += i
+                        i += 50
                 print(f"en enemigos hay: {Enemigos}")
                 print(f"Oleada: {self.Oleada}")
     def yaSePuede(self, enemigos):
@@ -89,13 +107,14 @@ class Enemigo:
         self.velx = 1
         self.salud = 100
         self.radio = 35
+        self.daño = 1
         self.color = (255, 0, 0)
         self.fila = random.randint(0, 4)
+        self.comiendo = False
         self.hitbox = (self.x - self.radio, self.y-self.radio, self.radio*2, self.radio*2)
 
     def dibujar(self):
         self.hitbox = (self.x-self.radio, self.y-self.radio, self.radio * 2, self.radio * 2)
-        pygame.draw.rect(win, self.color, self.hitbox, 1)
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radio)
     def mover(self):
         self.x -= self.velx
@@ -115,8 +134,8 @@ class Enemigo:
         elif self.fila == 4:
             self.y = 550
 
-    def leDieron(self):
-        self.salud -= 10
+    def leDieron(self, daño):
+        self.salud -= daño
     def seMurio(self):
         if self.salud > 0:
             return False
@@ -125,8 +144,17 @@ class Enemigo:
 
     def leDioAAlgo(self):
         for defensa in defensas:
-            if self.x == defensa.x + defensa.radius and self.fila == defensa.fila:
-
+            if self.y - self.radio < defensa.hitbox[1] + defensa.hitbox[3] and self.y + self.radio > enemigo.hitbox[1]:
+                if self.x + self.radio > defensa.hitbox[0] and self.x - self.radio < defensa.hitbox[0] + defensa.hitbox[2]:
+                    if self.fila == defensa.fila:
+                        self.velx = 0
+                        self.comiendo = True
+            else:
+                self.comiendo = False
+            if self.comiendo:
+                defensa.leDieron(self.daño)
+            else:
+                self.velx = 1
 class CuadroPala:
     def __init__(self, x, y):
         self.x = x
@@ -161,8 +189,11 @@ class Piñata:
         self.daño = 10
         self.vida = 100
         self.nombre = "Piñata"
+        self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius*2, self.radius*2)
 
     def dibujarDefensa(self):
+        self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius*2, self.radius*2)
+        pygame.draw.rect(win, (0, 0, 0), pygame.Rect(self.hitbox),1)
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
     # en cuadrado
@@ -189,7 +220,7 @@ class Piñata:
                                 self.projectiles.remove(projectil)
                             except:
                                 pass
-                            enemigo.leDieron()
+                            enemigo.leDieron(self.daño)
             if projectil.fuera():
                 self.projectiles.remove(projectil)
 
@@ -199,8 +230,8 @@ class Piñata:
         elif self.vida > 0:
             return False
 
-    def leDieron(self):
-        self.vida -= 5
+    def leDieron(self, daño):
+        self.vida -= daño
 
 
 
@@ -214,10 +245,12 @@ class Piñata2:
         self.color = (255, 255, 0)
         self.projectiles = []
         self.cooldown = 0
-        self.daño = 10
+        self.daño = 100
         self.vida = 100
         self.nombre = "Piñata2"
+        self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
     def dibujarDefensa(self):
+        self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
     def dibujarDefensaEC(self, x, y):
@@ -231,16 +264,19 @@ class Piñata2:
     def atacar(self):
         self.Cooldown()
         if self.cooldown == 0:
-            self.projectiles.append(Projectil(self.x, self.y))
+            self.projectiles.append(ProjectilTeledirigido(self.x, self.y))
         for projectil in self.projectiles:
             projectil.dibujar()
-            projectil.mover()
+            try:
+                projectil.dirigir(Enemigos[0].x, Enemigos[0].y)
+            except:
+                pass
             for enemigo in Enemigos:
                 if projectil.y - projectil.radio < enemigo.hitbox[1] + enemigo.hitbox[3] and projectil.y + projectil.radio > enemigo.hitbox[1]:
                     if projectil.x + projectil.radio > enemigo.hitbox[0] and projectil.x - projectil.radio < enemigo.hitbox[0] + enemigo.hitbox[2]:
                         if len(self.projectiles) != 0:
                             self.projectiles.remove(self.projectiles[0])
-                            enemigo.leDieron()
+                            enemigo.leDieron(self.daño)
             if projectil.fuera():
                 self.projectiles.remove(projectil)
 
@@ -249,8 +285,8 @@ class Piñata2:
             return True
         elif self.vida > 0:
             return False
-    def leDieron(self):
-        self.vida -= 5
+    def leDieron(self, daño):
+        self.vida -= daño
 
 class Piñata3:
     def __init__(self, x, y):
@@ -265,7 +301,9 @@ class Piñata3:
         self.daño = 10
         self.vida = 100
         self.nombre = "Piñata3"
+        self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
     def dibujarDefensa(self):
+        self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
     def dibujarDefensaEC(self, x, y):
@@ -288,7 +326,7 @@ class Piñata3:
                     if projectil.x + projectil.radio > enemigo.hitbox[0] and projectil.x - projectil.radio < enemigo.hitbox[0] + enemigo.hitbox[2]:
                         if len(self.projectiles) != 0:
                             self.projectiles.remove(self.projectiles[0])
-                            enemigo.leDieron()
+                            enemigo.leDieron(self.daño)
             if projectil.fuera():
                 self.projectiles.remove(projectil)
 
@@ -297,8 +335,8 @@ class Piñata3:
             return True
         elif self.vida > 0:
             return False
-    def leDieron(self):
-        self.vida -= 5
+    def leDieron(self, daño):
+        self.vida -= daño
 
 
 class Piñata4:
@@ -314,7 +352,9 @@ class Piñata4:
         self.daño = 10
         self.vida = 100
         self.nombre = "Piñata4"
+        self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
     def dibujarDefensa(self):
+        self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
     def dibujarDefensaEC(self, x, y):
@@ -337,7 +377,7 @@ class Piñata4:
                     if projectil.x + projectil.radio > enemigo.hitbox[0] and projectil.x - projectil.radio < enemigo.hitbox[0] + enemigo.hitbox[2]:
                         if len(self.projectiles) != 0:
                             self.projectiles.remove(self.projectiles[0])
-                            enemigo.leDieron()
+                            enemigo.leDieron(self.daño)
             if projectil.fuera():
                 self.projectiles.remove(projectil)
 
@@ -346,8 +386,8 @@ class Piñata4:
             return True
         elif self.vida > 0:
             return False
-    def leDieron(self):
-        self.vida -= 5
+    def leDieron(self, daño):
+        self.vida -= daño
 
 class Piñata5:
     def __init__(self, x, y):
@@ -362,7 +402,9 @@ class Piñata5:
         self.daño = 10
         self.vida = 100
         self.nombre = "Piñata5"
+        self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
     def dibujarDefensa(self):
+        self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
     def dibujarDefensaEC(self, x, y):
@@ -385,17 +427,17 @@ class Piñata5:
                     if projectil.x + projectil.radio > enemigo.hitbox[0] and projectil.x - projectil.radio < enemigo.hitbox[0] + enemigo.hitbox[2]:
                         if len(self.projectiles) != 0:
                             self.projectiles.remove(self.projectiles[0])
-                            enemigo.leDieron()
+                            enemigo.leDieron(self.daño)
             if projectil.fuera():
                 self.projectiles.remove(projectil)
-        def semurio(self):
-            if self.vida <= 0:
-                return True
-            elif self.vida > 0:
-                return False
+    def semurio(self):
+        if self.vida <= 0:
+            return True
+        elif self.vida > 0:
+            return False
 
-        def leDieron(self):
-            self.vida -= 5
+    def leDieron(self, daño):
+        self.vida -= daño
 class calaveras:
     def __init__(self):
         self.x = random.randint(0, 115)
@@ -500,8 +542,11 @@ class RectanguloOscuro:
     def detectarClick(self, mx, my):
         if (self.y + self.height) > my > self.y:
             if self.x < mx < (self.x + self.width):
-                print(
-                    f"hizo click en el cuadrado de la columna {self.columna}, fila {self.fila}. indice: {self.indice}contiene {self.contiene}")
+                try:
+                    print(
+                        f"hizo click en el cuadrado de la columna {self.columna}, fila {self.fila}. indice: {self.indice}contiene {self.contiene} y este tiene de vida {self.contiene[0].vida}")
+                except:
+                    print("ups")
                 # si tienes algo en el mouse y la casilla no contiene nada:
                 if ahoritaTiene != [] and self.contiene == [] and ahoritaTiene[0] != "Quitara":
                     self.contiene.append(ahoritaTiene[0])
@@ -581,12 +626,15 @@ while run:
         if rectangulo.contiene and rectangulo.contiene[0] not in defensas:
             defensanueva = rectangulo.contiene[0]
             defensas.append(defensanueva)
+        elif rectangulo.contiene and rectangulo.contiene[0].semurio():
+            rectangulo.contiene = []
     for defensa in defensas:
         if not botonSig.clickeable:
             defensa.atacar()
         else:
             defensa.projectiles = []
-
+        if defensa.semurio():
+            defensas.remove(defensa)
 
 
     # Dibujar cuadro plantas
@@ -616,6 +664,7 @@ while run:
         enemigo.ySegunSuFila()
         enemigo.dibujar()
         enemigo.mover()
+        enemigo.leDioAAlgo()
         if enemigo.fuera():
             Enemigos.remove(enemigo)
         if enemigo.seMurio():
@@ -639,6 +688,6 @@ while run:
             elif cosa.nombre == "Piñata5":
                 nuevacosa = Piñata5(mx,my)
                 pygame.draw.circle(win,nuevacosa.color,(nuevacosa.x,nuevacosa.y),nuevacosa.radius)
-    print(mx, my)
+    #print(mx, my)
     pygame.time.delay(10)
     pygame.display.update()
