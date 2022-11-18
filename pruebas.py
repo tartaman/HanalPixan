@@ -2,6 +2,15 @@ import pygame
 import random
 import os.path
 
+# todo Esto falta namas y nos podemos ir a matar
+"""  
+falta:,
+-Mecanicas de cada planta
+-Mecanicas de cada enemy
+-Que los misiles no se quiten si no hay enemigos
+Si
+"""
+# todo Cosas importantes del juego
 pygame.init()
 width = 1280
 height = 720
@@ -10,31 +19,13 @@ win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("xd wachin")
 background = pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes", "aaa.png")), (width, height))
 mx, my = pygame.mouse.get_pos()
-
 Rectangulos = []
-
 CuadradosPlantas = []
-
 recursos = 0
-
 nuevacosa = 0
-""" 
--Hacer la pala (para quitar plantas) LISTO
-- Crear varias plantas y que se ordenen según el cuadrado LISTO
-falta:,
-
-- Que disparen 
--Crear enemigos EN PROCESO
--Que se muevan en las líneas
--Que se creen aleatoriamente
--Que se puedan escoger las plantas 
--Segun las plantas escogidas, ordenarlas en la cuadricula de plantas
--Hacer sistema de oleadas
--Precio de las plantas y generador de dinero
--Mecanicas de cada planta
--si el enemigo esta en la fila entonces dispara
-"""
 run = True
+
+# todo Cosas de los proyectiles
 class Projectil:
     def __init__(self, x, y):
         self.x = x
@@ -49,6 +40,7 @@ class Projectil:
 
     def fuera(self):
         return (self.x > width)
+
 
 class ProjectilTeledirigido(Projectil):
     def __init__(self,x,y):
@@ -67,6 +59,9 @@ class ProjectilTeledirigido(Projectil):
             self.y -= self.vely
         if self.y < enemigoy:
             self.y += self.vely
+
+
+# Todo cosas relacionadas a botones
 class BotonSig:
     def __init__(self):
         self.x = 1150
@@ -108,7 +103,27 @@ class BotonSig:
             self.color = (60, 179, 113)
 
 
+class CuadroPala:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.width = 100
+        self.height = 100
+        self.color = (255, 0, 0)
 
+    def dibujar(self):
+        pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
+
+    def detectarClick(self, mx, my):
+        if (self.y + self.height) > my > self.y:
+            if self.x < mx < (self.x + self.width):
+                if len(ahoritaTiene) == 0:
+                    print("pala")
+                    ahoritaTiene.append("Quitara")
+                    print(f"ahorita tiene: {ahoritaTiene}")
+
+
+# Todo cosas relacionadas a los enemigos
 class Enemigo:
     def __init__(self):
         self.x = 1155
@@ -165,25 +180,8 @@ class Enemigo:
             else:
                 self.velx = 1
 
-class CuadroPala:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.width = 100
-        self.height = 100
-        self.color = (255, 0, 0)
 
-    def dibujar(self):
-        pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
-
-    def detectarClick(self, mx, my):
-        if (self.y + self.height) > my > self.y:
-            if self.x < mx < (self.x + self.width):
-                if len(ahoritaTiene) == 0:
-                    print("pala")
-                    ahoritaTiene.append("Quitara")
-                    print(f"ahorita tiene: {ahoritaTiene}")
-
+# todo cosas relacionadas a plantas
 
 class Piñata:
     def __init__(self, x, y, fila= -3):
@@ -311,6 +309,7 @@ class Piñata2:
     def leDieron(self, daño):
         self.vida -= daño
 
+
 class Piñata3:
     def __init__(self, x, y):
         self.x = x
@@ -436,6 +435,7 @@ class Piñata4:
     def leDieron(self, daño):
         self.vida -= daño
 
+
 class Piñata5:
     def __init__(self, x, y):
         self.x = x
@@ -499,9 +499,13 @@ class Piñata5:
     def leDieron(self, daño):
         self.vida -= daño
 
+
 class null:
     def sepuede(self):
         return False
+
+
+#todo cosas relacionadas a las calaveras
 class calaveras:
     def __init__(self):
         self.x = random.randint(15, 115)
@@ -543,6 +547,7 @@ class calaveras:
         return self.click
 
 
+#todo Cosas de la rejilla (NO TOCAR SI NO SE MUERE)
 class RectanguloPlantas:
     def __init__(self, x, y):
         self.color = (253, 187, 73)
@@ -665,31 +670,32 @@ class RectanguloOscuro:
             self.contiene[0].y = self.y + self.height // 2
             self.contiene[0].dibujarDefensa()
 
+
 def dibujar_cosas():
     win.blit(background, (0, 0))
 defensasEscogidas = [Piñata(-100, -100), Piñata2(-100, -100), Piñata3(-100, -100), Piñata4(-100, -100),
                      Piñata5(-100, -100)]
+
+
 # todo crear enemigos
 Enemigos = []
-
 ahoritaTiene = []
-
 defensas = []
 soles = [calaveras()]
-
 cosasEnRectangulos = 0
 rectanguloPlantas = RectanguloPlantas(((width - (width // 3)) // 2), 0)
 cuadroPala = CuadroPala(0, 0)
 botonSig = BotonSig()
-
 click = False
 
-while run:
 
+# Todo loop principal
+while run:
     win.fill((0, 0, 0))
     mx, my = pygame.mouse.get_pos()
     ev = pygame.event.get()
     dibujar_cosas()
+
     for event in ev:
         if event.type == pygame.QUIT:
             run = False
@@ -709,7 +715,7 @@ while run:
             cuadroPala.detectarClick(mx, my)
             botonSig.detectarClick(mx, my)
 
-    # Crear cuadricula
+    # Todo Crear cuadricula
     if len(Rectangulos) == 0:
         i = 0
         columna = 0
@@ -738,7 +744,7 @@ while run:
             defensas.remove(defensa)
 
 
-    # Dibujar cuadro plantas
+    # Todo Dibujar cuadro plantas
     if len(CuadradosPlantas) == 0:
         i = 0
         for x in range(457, 853 - 75, 75):
@@ -759,8 +765,9 @@ while run:
     cuadroPala.dibujar()
     #Dibujar boton sig
     botonSig.dibujar()
-    #Dibujar enemigos si hay enemigos
 
+
+    #TOdo Dibujar enemigos si hay enemigos
     for enemigo in Enemigos:
         enemigo.ySegunSuFila()
         enemigo.dibujar()
@@ -770,7 +777,8 @@ while run:
             Enemigos.remove(enemigo)
         if enemigo.seMurio():
             Enemigos.remove(enemigo)
-    #Siempre checar si el boton se puede clickear
+
+    # Todo Siempre checar si el boton se puede clickear
     botonSig.yaSePuede(Enemigos)
     for cosa in ahoritaTiene:
         if cosa != "Quitara":
@@ -786,11 +794,9 @@ while run:
                 nuevacosa = Piñata5(mx,my)
             nuevacosa.dibujarDefensa()
         else:
-            pygame.draw.circle(win,(0,0,0),(mx,my),25)
+            pygame.draw.circle(win, (0, 0, 0), (mx, my), 25)
 
-
-
-    #soles
+    # Todo soles
     for sol in soles:
         sol.generar_sol()
         sol.dibujar_sol()
