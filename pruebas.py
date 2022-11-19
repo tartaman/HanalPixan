@@ -444,15 +444,11 @@ class Girasol:
         # radio por ahora pq ajam
         self.radius = 35
         self.color = (0, 255, 255)
-        self.solecitos = []
         self.cooldown = 0
         self.vida = 100
         self.nombre = "Girasol"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         self.precio = 50
-        self.radio = 15
-        self.vely = 5
-
 
     def sepuede(self, soles):
         self.soles = soles
@@ -471,23 +467,16 @@ class Girasol:
     def dibujarDefensaEC(self, x, y):
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
-    def Cooldown(self):
-        if self.cooldown >= 20:
+    def Cooldowndesol(self):
+        if self.cooldown >= 100:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
 
-    def generar(self):
-        self.Cooldown()
+    def atacar(self):
+        self.Cooldowndesol()
         if self.cooldown == 0:
-            if len(soles) <= 3:
-                self.hitbox = (self.x - self.radio, self.y - self.radio, self.radio * 2, self.radio * 2)
-                pygame.draw.circle(win, (255, 255, 255), (self.x, self.y,), self.radio)
-                soles.append(calaveras())
-                self.y -= self.vely * 2
-                self.vely -= 1
-                if self.vely < -5:
-                    self.vely = 5
+            generarcalaveras(self.x, self.y, 1)
 
     def semurio(self):
         if self.vida <= 0:
@@ -506,9 +495,9 @@ class null:
 
 #todo cosas relacionadas a las calaveras
 class calaveras:
-    def __init__(self):
-        self.x = random.randint(15, 115)
-        self.y = random.randint(161, 478)
+    def __init__(self,x ,y):
+        self.x = x
+        self.y = y
         self.radio = 15
         self.hitbox = (self.x - self.radio, self.y - self.radio, self.radio * 2, self.radio * 2)
         self.mx = mx
@@ -533,11 +522,14 @@ class calaveras:
                 self.click = True
         return self.click
 
-def generarcalaveras():
-    x = random.randint(15, 115)
-    y = random.randint(161, 478)
-    radio = 15
-    soles.append(calaveras())
+def generarcalaveras(x,y,state):
+    if state == 0:
+        x = random.randint(15, 115)
+        y = random.randint(161, 478)
+    else:
+        x = x
+        y = y
+    soles.append(calaveras(x, y))
     print("se genero sol xd")
 
 
@@ -595,7 +587,7 @@ class CuadroPlantas:
                             recursos -= defensa.precio
                             ahoritaTiene.append(defensa)
 
-                    elif self.contains[self.indice].nombre == "Piñata4" :
+                    elif self.contains[self.indice].nombre == "Piñata4":
                         defensa = Piñata4(self.contains[self.indice].x, self.contains[self.indice].y)
                         if recursos > defensa.precio:
                             recursos -= defensa.precio
@@ -675,7 +667,7 @@ defensasEscogidas = [Piñata(-100, -100), Piñata2(-100, -100), Piñata3(-100, -
 Enemigos = []
 ahoritaTiene = []
 defensas = []
-soles = [calaveras()]
+soles = []
 cosasEnRectangulos = 0
 rectanguloPlantas = RectanguloPlantas(((width - (width // 3)) // 2), 0)
 cuadroPala = CuadroPala(0, 0)
@@ -794,7 +786,7 @@ while run:
     # Todo soles
     if cooldown >= 100:
         cooldown = 0
-        generarcalaveras()
+        generarcalaveras(0,0,0)
     else:
         cooldown += 1
 
