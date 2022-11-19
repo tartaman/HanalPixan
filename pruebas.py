@@ -373,7 +373,7 @@ class Piñata3:
         self.vida -= daño
 
 
-class Piñata4:
+class Nuez:
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -384,8 +384,8 @@ class Piñata4:
         self.projectiles = []
         self.cooldown = 0
         self.daño = 10
-        self.vida = 100
-        self.nombre = "Piñata4"
+        self.vida = 300
+        self.nombre = "Nuez"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         self.precio = 50
         self.soles = 0
@@ -406,26 +406,8 @@ class Piñata4:
     def dibujarDefensaEC(self, x, y):
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
-    def Cooldown(self):
-        if self.cooldown >= 10:
-            self.cooldown = 0
-        elif self.cooldown >= 0:
-            self.cooldown += 1
     def atacar(self):
-        self.Cooldown()
-        if self.cooldown == 0:
-            self.projectiles.append(Projectil(self.x, self.y))
-        for projectil in self.projectiles:
-            projectil.dibujar()
-            projectil.mover()
-            for enemigo in Enemigos:
-                if projectil.y - projectil.radio < enemigo.hitbox[1] + enemigo.hitbox[3] and projectil.y + projectil.radio > enemigo.hitbox[1]:
-                    if projectil.x + projectil.radio > enemigo.hitbox[0] and projectil.x - projectil.radio < enemigo.hitbox[0] + enemigo.hitbox[2]:
-                        if len(self.projectiles) != 0:
-                            self.projectiles.remove(self.projectiles[0])
-                            enemigo.leDieron(self.daño)
-            if projectil.fuera():
-                self.projectiles.remove(projectil)
+        print("ola")
 
     def semurio(self):
         if self.vida <= 0:
@@ -587,8 +569,8 @@ class CuadroPlantas:
                             recursos -= defensa.precio
                             ahoritaTiene.append(defensa)
 
-                    elif self.contains[self.indice].nombre == "Piñata4":
-                        defensa = Piñata4(self.contains[self.indice].x, self.contains[self.indice].y)
+                    elif self.contains[self.indice].nombre == "Nuez":
+                        defensa = Nuez(self.contains[self.indice].x, self.contains[self.indice].y)
                         if recursos > defensa.precio:
                             recursos -= defensa.precio
                             ahoritaTiene.append(defensa)
@@ -659,7 +641,7 @@ class RectanguloOscuro:
 
 def dibujar_cosas():
     win.blit(background, (0, 0))
-defensasEscogidas = [Piñata(-100, -100), Piñata2(-100, -100), Piñata3(-100, -100), Piñata4(-100, -100),
+defensasEscogidas = [Piñata(-100, -100), Piñata2(-100, -100), Piñata3(-100, -100), Nuez(-100, -100),
                      Girasol(-100, -100)]
 
 
@@ -775,8 +757,8 @@ while run:
                 nuevacosa = Piñata2(mx,my)
             elif cosa.nombre == "Piñata3":
                 nuevacosa = Piñata3(mx,my)
-            elif cosa.nombre == "Piñata4":
-                nuevacosa = Piñata4(mx,my)
+            elif cosa.nombre == "Nuez":
+                nuevacosa = Nuez(mx,my)
             elif cosa.nombre == "Girasol":
                 nuevacosa = Girasol(mx,my)
             nuevacosa.dibujarDefensa()
