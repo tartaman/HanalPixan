@@ -584,9 +584,9 @@ class CuadroPlantas:
 
 class RectanguloOscuro:
     def __init__(self, x, y, columna, fila, indice):
-        self.color = (0, 0, 0)
+        self.color = (255, 255, 255)
         self.width = ((width - 450) // 9)
-        self.height = ((height - 200) // 5)
+        self.height = ((height - 240) // 5)
         self.x = x
         self.y = y
         self.columna = columna
@@ -628,8 +628,8 @@ class RectanguloOscuro:
             self.contiene[0].dibujarDefensa()
 
 
-def dibujar_cosas():
-    win.blit(background, (0, 0))
+#def dibujar_cosas():
+    #win.blit(background, (0, 0))
 defensasEscogidas = [Piñata(-100, -100), Piñata2(-100, -100), Piñata3(-100, -100), Nuez(-100, -100),
                      Girasol(-100, -100)]
 
@@ -652,7 +652,7 @@ while run:
     win.fill((0, 0, 0))
     mx, my = pygame.mouse.get_pos()
     ev = pygame.event.get()
-    dibujar_cosas()
+    #dibujar_cosas()
 
     for event in ev:
         if event.type == pygame.QUIT:
@@ -678,8 +678,8 @@ while run:
         i = 0
         columna = 0
         fila = 0
-        for y in range(100, height - 100, (height - 200) // 5):
-                for x in range(200, width - 250, (width - 450) // 9):
+        for y in range(112, height - 128, (height - 240) // 5):
+                for x in range(208, width - 242, (width - 450) // 9):
                         Rectangulos.append(RectanguloOscuro(x, y, columna, fila, i))
                         columna += 1
                         i += 1
