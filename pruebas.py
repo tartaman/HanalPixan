@@ -21,7 +21,7 @@ background = pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imag
 mx, my = pygame.mouse.get_pos()
 Rectangulos = []
 CuadradosPlantas = []
-recursos = 0
+recursos = 50
 nuevacosa = 0
 run = True
 
@@ -210,7 +210,7 @@ class Piñata:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
     def Cooldown(self):
-        if self.cooldown >= 30:
+        if self.cooldown >= 100:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
@@ -407,7 +407,7 @@ class Nuez:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
     def atacar(self):
-        print("ola")
+        print("o")
 
     def semurio(self):
         if self.vida <= 0:
@@ -450,7 +450,7 @@ class Girasol:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
     def Cooldowndesol(self):
-        if self.cooldown >= 100:
+        if self.cooldown >= 454:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
@@ -545,6 +545,7 @@ class CuadroPlantas:
 
     def detectarClick(self, mx, my):
         global recursos
+        global defensa
         if (self.y + self.height) > my > self.y:
             if self.x < mx < (self.x + self.width):
                 print(f"Escogio el cuadrado {self.indice}, que contiene {self.contains}")
@@ -553,33 +554,21 @@ class CuadroPlantas:
                     # todo Crea un objeto nuevo fuera de la pantalla para agregar necesitamos if que digan que planta es para ponerla
                     if self.contains[self.indice].nombre == "Piñata":
                         defensa = Piñata(self.contains[self.indice].x, self.contains[self.indice].y)
-                        if recursos > defensa.precio:
-                            recursos -= defensa.precio
-                            ahoritaTiene.append(defensa)
 
                     elif self.contains[self.indice].nombre == "Piñata2":
                         defensa = Piñata2(self.contains[self.indice].x, self.contains[self.indice].y)
-                        if recursos > defensa.precio:
-                            recursos -= defensa.precio
-                            ahoritaTiene.append(defensa)
 
                     elif self.contains[self.indice].nombre == "Piñata3":
                         defensa = Piñata3(self.contains[self.indice].x, self.contains[self.indice].y)
-                        if recursos > defensa.precio:
-                            recursos -= defensa.precio
-                            ahoritaTiene.append(defensa)
 
                     elif self.contains[self.indice].nombre == "Nuez":
                         defensa = Nuez(self.contains[self.indice].x, self.contains[self.indice].y)
-                        if recursos > defensa.precio:
-                            recursos -= defensa.precio
-                            ahoritaTiene.append(defensa)
 
                     elif self.contains[self.indice].nombre == "Girasol":
                         defensa = Girasol(self.contains[self.indice].x, self.contains[self.indice].y)
-                        if recursos >= defensa.precio:
-                            recursos -= defensa.precio
-                            ahoritaTiene.append(defensa)
+                    if recursos >= defensa.precio:
+                        recursos -= defensa.precio
+                        ahoritaTiene.append(defensa)
 
                     print(f"ahorita tiene: {ahoritaTiene}")
                 if ahoritaTiene:
@@ -766,7 +755,7 @@ while run:
             pygame.draw.circle(win, (0, 0, 0), (mx, my), 25)
 
     # Todo soles
-    if cooldown >= 100:
+    if cooldown >= 400:
         cooldown = 0
         generarcalaveras(0,0,0)
     else:
