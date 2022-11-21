@@ -46,8 +46,8 @@ class ProjectilTeledirigido(Projectil):
     def __init__(self,x,y):
         self.x = x
         self.y = y
-        self.velx = 3
-        self.vely = 3
+        self.velx = 1
+        self.vely = 1
         self.radio = 10
         self.color = (255,255,0)
     def dirigir(self, enemigox,enemigoy):
@@ -91,7 +91,7 @@ class BotonSig:
                         # y cuando la lista ya no tenga, va a volver a poner enemigos.
                     for enemigo in Enemigos:
                         enemigo.x += i
-                        i += 50
+                        i += 70
                 print(f"en enemigos hay: {Enemigos}")
                 print(f"Oleada: {self.Oleada}")
     def yaSePuede(self, enemigos):
@@ -128,13 +128,12 @@ class Enemigo:
     def __init__(self):
         self.x = 1155
         self.y = -100
-        self.velx = 1
+        self.velx = 0.3
         self.salud = 100
         self.radio = 35
         self.daño = 1
         self.color = (255, 0, 0)
         self.fila = random.randint(0, 4)
-        self.comiendo = False
         self.hitbox = (self.x - self.radio, self.y-self.radio, self.radio*2, self.radio*2)
 
     def dibujar(self):
@@ -172,13 +171,14 @@ class Enemigo:
                 if self.x + self.radio > defensa.hitbox[0] and self.x - self.radio < defensa.hitbox[0] + defensa.hitbox[2]:
                     if self.fila == defensa.fila:
                         self.velx = 0
-                        self.comiendo = True
+                        self.color = (255,255,255)
+                        defensa.leDieron(self.daño)
+                        print("esta comiendo")
             else:
-                self.comiendo = False
-            if self.comiendo:
-                defensa.leDieron(self.daño)
-            else:
-                self.velx = 1
+                self.velx = 0.3
+                self.color = (255,0,0)
+                print("no estan comiendo")
+
 
 
 # todo cosas relacionadas a plantas
@@ -278,7 +278,7 @@ class Piñata2:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
     def Cooldown(self):
-        if self.cooldown >= 50:
+        if self.cooldown >= 300:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
@@ -480,7 +480,7 @@ class calaveras:
     def __init__(self,x ,y):
         self.x = x
         self.y = y
-        self.radio = 15
+        self.radio = 25
         self.hitbox = (self.x - self.radio, self.y - self.radio, self.radio * 2, self.radio * 2)
         self.mx = mx
         self.my = my
@@ -490,8 +490,8 @@ class calaveras:
     def saltar(self):
         self.hitbox = (self.x-self.radio, self.y-self.radio, self.radio*2, self.radio*2)
         pygame.draw.circle(win, (255, 255, 255), (self.x, self.y, ), self.radio)
-        self.y -= self.vely * 2
-        self.vely -= 1
+        self.y -= self.vely
+        self.vely -= 0.15
         if self.vely < -5:
             self.vely = 5
 
@@ -688,18 +688,19 @@ while run:
     for rectangulo in Rectangulos:
         rectangulo.dibujar()
         rectangulo.mostrarLoQueContiene()
-        if rectangulo.contiene and rectangulo.contiene[0] not in defensas:
-            defensanueva = rectangulo.contiene[0]
-            defensas.append(defensanueva)
-        elif rectangulo.contiene and rectangulo.contiene[0].semurio():
-            rectangulo.contiene = []
+        if rectangulo.contiene:
+            if rectangulo.contiene[0] not in defensas:
+                defensanueva = rectangulo.contiene[0]
+                defensas.append(defensanueva)
+            if rectangulo.contiene[0].semurio():
+                print(f"semurio la planta {rectangulo.contiene[0].nombre}, en la fila {rectangulo.fila}, columna {rectangulo.columna}")
+                defensas.remove(rectangulo.contiene[0])
+                rectangulo.contiene = []
     for defensa in defensas:
         if not botonSig.clickeable:
             defensa.atacar()
         else:
             defensa.projectiles = []
-        if defensa.semurio():
-            defensas.remove(defensa)
 
 
     # Todo Dibujar cuadro plantas
@@ -755,14 +756,15 @@ while run:
             pygame.draw.circle(win, (0, 0, 0), (mx, my), 25)
 
     # Todo soles
-    if cooldown >= 400:
-        cooldown = 0
-        generarcalaveras(0,0,0)
-    else:
-        cooldown += 1
+    if not botonSig.clickeable:
+        if cooldown >= 500:
+            cooldown = 0
+            generarcalaveras(0,0,0)
+        else:
+            cooldown += 1
 
-    for solesitos in soles:
-        solesitos.saltar()
+        for solesitos in soles:
+            solesitos.saltar()
 
     pygame.time.delay(10)
     pygame.display.update()
