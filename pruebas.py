@@ -628,8 +628,8 @@ class RectanguloOscuro:
             self.contiene[0].dibujarDefensa()
 
 
-#def dibujar_cosas():
-    #win.blit(background, (0, 0))
+def dibujar_cosas():
+    win.blit(background, (0, 0))
 defensasEscogidas = [Piñata(-100, -100), Piñata2(-100, -100), Piñata3(-100, -100), Nuez(-100, -100),
                      Girasol(-100, -100)]
 
@@ -652,7 +652,7 @@ while run:
     win.fill((0, 0, 0))
     mx, my = pygame.mouse.get_pos()
     ev = pygame.event.get()
-    #dibujar_cosas()
+    dibujar_cosas()
 
     for event in ev:
         if event.type == pygame.QUIT:
