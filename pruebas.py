@@ -10,6 +10,16 @@ falta:,
 -Que los misiles no se quiten si no hay enemigos
 Si
 """
+#toDO cosas para cargar imagenes
+flame =[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "0.png")), (70, 70)),
+        pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "1.png")), (70, 70)),
+        pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "2.png")), (70, 70)),
+        pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "3.png")), (70, 70)),
+        pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "4.png")), (70, 70)),
+        pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "5.png")), (70, 70)),
+        pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "6.png")), (70, 70)),
+        pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "0.png")), (70, 70))]
+
 # todo Cosas importantes del juego
 pygame.init()
 width = 1280
@@ -480,20 +490,26 @@ class calaveras:
     def __init__(self,x ,y):
         self.x = x
         self.y = y
-        self.radio = 25
+        self.radio = 20
         self.hitbox = (self.x - self.radio, self.y - self.radio, self.radio * 2, self.radio * 2)
         self.mx = mx
         self.my = my
-        self.vely = 5
+        self.vely = 4
         self.click = False
+        self.stepIndex = 0
 
-    def saltar(self):
+    def saltar(self,win):
         self.hitbox = (self.x-self.radio, self.y-self.radio, self.radio*2, self.radio*2)
-        pygame.draw.circle(win, (255, 255, 255), (self.x, self.y, ), self.radio)
+
         self.y -= self.vely
         self.vely -= 0.15
-        if self.vely < -5:
-            self.vely = 5
+        if self.vely < -4:
+            self.vely = 4
+        if self.stepIndex >= 8:
+            self.stepIndex = 0
+        win.blit(flame[self.stepIndex], (self.x-self.radio*2+10, self.y-self.radio*2))
+        self.stepIndex += 1
+
 
     def direction(self):
         pygame.draw.rect(win, (0, 0, 0), pygame.Rect(self.hitbox), 1)
@@ -745,6 +761,7 @@ while run:
                 nuevacosa = Piñata(mx,my)
             elif cosa.nombre == "Piñata2":
                 nuevacosa = Piñata2(mx,my)
+                nuevacosa = Piñata2(mx,my)
             elif cosa.nombre == "Piñata3":
                 nuevacosa = Piñata3(mx,my)
             elif cosa.nombre == "Nuez":
@@ -764,7 +781,7 @@ while run:
             cooldown += 1
 
         for solesitos in soles:
-            solesitos.saltar()
+            solesitos.saltar(win)
 
     pygame.time.delay(10)
     pygame.display.update()
