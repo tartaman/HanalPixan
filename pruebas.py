@@ -27,6 +27,7 @@ height = 720
 clock = pygame.time.Clock()
 win = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Alpha")
+XD= pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes", "gameoverphrase.jpg")), (width, height))
 background = pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes", "aaa.png")), (width, height))
 mx, my = pygame.mouse.get_pos()
 Rectangulos = []
@@ -138,7 +139,7 @@ class Enemigo:
     def __init__(self):
         self.x = 1155
         self.y = -100
-        self.velx = 0.3
+        self.velx = 6
         self.salud = 100
         self.radio = 35
         self.daño = 1
@@ -151,11 +152,12 @@ class Enemigo:
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radio)
     def mover(self):
         self.x -= self.velx
+    def posicion(self):
+        return self.x
 
     def fuera(self):
-        return (self.x < 0)
+        return (self.x < 208)
     def ySegunSuFila(self):
-        """"como no hay switch pos ajam puro if"""
         if self.fila == 0:
             self.y = 150
         elif self.fila == 1:
@@ -649,6 +651,16 @@ def dibujar_cosas():
 defensasEscogidas = [Piñata(-100, -100), Piñata2(-100, -100), Piñata3(-100, -100), Nuez(-100, -100),
                      Girasol(-100, -100)]
 
+def gameover(win):
+    for rectangulo in Rectangulos:
+        rectangulo.dibujar()
+        rectangulo.mostrarLoQueContiene()
+        if rectangulo.contiene:
+            defensas.remove(rectangulo.contiene[0])
+            rectangulo.contiene = []
+    for enemigo in Enemigos:
+        Enemigos.remove(enemigo)
+    win.blit(XD, (0, 0))
 
 # todo crear enemigos
 Enemigos = []
@@ -661,6 +673,7 @@ cuadroPala = CuadroPala(0, 0)
 botonSig = BotonSig()
 click = False
 cooldown= 0
+temoriste = False
 
 
 # Todo loop principal
@@ -749,9 +762,11 @@ while run:
         enemigo.mover()
         enemigo.leDioAAlgo()
         if enemigo.fuera():
-            Enemigos.remove(enemigo)
+            temoriste = True
         if enemigo.seMurio():
             Enemigos.remove(enemigo)
+
+
 
     # Todo Siempre checar si el boton se puede clickear
     botonSig.yaSePuede(Enemigos)
@@ -760,7 +775,6 @@ while run:
             if cosa.nombre == "Piñata":
                 nuevacosa = Piñata(mx,my)
             elif cosa.nombre == "Piñata2":
-                nuevacosa = Piñata2(mx,my)
                 nuevacosa = Piñata2(mx,my)
             elif cosa.nombre == "Piñata3":
                 nuevacosa = Piñata3(mx,my)
@@ -774,14 +788,16 @@ while run:
 
     # Todo soles
     if not botonSig.clickeable:
-        if cooldown >= 500:
-            cooldown = 0
-            generarcalaveras(0,0,0)
-        else:
-            cooldown += 1
+        if not temoriste:
+            if cooldown >= 500:
+                cooldown = 0
+                generarcalaveras(0,0,0)
+            else:
+                cooldown += 1
 
-        for solesitos in soles:
-            solesitos.saltar(win)
+            for solesitos in soles:
+                solesitos.saltar(win)
+
 
     pygame.time.delay(10)
     pygame.display.update()
