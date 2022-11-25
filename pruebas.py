@@ -187,7 +187,7 @@ class Enemigo:
             else:
                 self.velx = 0.3
                 self.color = (255,0,0)
-                print("no estan comiendo")
+                print(clock.get_fps())
 
 
 
@@ -783,5 +783,5 @@ while run:
         for solesitos in soles:
             solesitos.saltar(win)
 
-    pygame.time.delay(10)
+    clock.tick(30)
     pygame.display.update()
