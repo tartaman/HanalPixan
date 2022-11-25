@@ -156,7 +156,7 @@ class Enemigo:
         return self.x
 
     def fuera(self):
-        return (self.x < 208)
+        return (self.x < 185)
     def ySegunSuFila(self):
         if self.fila == 0:
             self.y = 150
@@ -662,6 +662,7 @@ def gameover(win):
         Enemigos.remove(enemigo)
     win.blit(XD, (0, 0))
 
+
 # todo crear enemigos
 Enemigos = []
 ahoritaTiene = []
@@ -678,125 +679,138 @@ temoriste = False
 
 # Todo loop principal
 while run:
-    win.fill((0, 0, 0))
-    mx, my = pygame.mouse.get_pos()
+    userInput = pygame.key.get_pressed()
     ev = pygame.event.get()
-    dibujar_cosas()
-
     for event in ev:
         if event.type == pygame.QUIT:
             run = False
-        # todo aqui abajo se pone lo que necesite ser con click
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            for rectangulo in Rectangulos:
-                rectangulo.detectarClick(mx, my)
-            for cuadrado in CuadradosPlantas:
-                cuadrado.detectarClick(mx, my)
-            for solesitos in soles:
-                click = solesitos.detectar_click(mx, my)
-                if (click):
-                    recursos += 50
-                    print(f"ahora tiene {recursos} soles")
-                    soles.remove(solesitos)
+    if not temoriste:
+        win.fill((0, 0, 0))
+        mx, my = pygame.mouse.get_pos()
+        dibujar_cosas()
 
-            cuadroPala.detectarClick(mx, my)
-            botonSig.detectarClick(mx, my)
+        for event in ev:
+            # todo aqui abajo se pone lo que necesite ser con click
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                for rectangulo in Rectangulos:
+                    rectangulo.detectarClick(mx, my)
+                for cuadrado in CuadradosPlantas:
+                    cuadrado.detectarClick(mx, my)
+                for solesitos in soles:
+                    click = solesitos.detectar_click(mx, my)
+                    if (click):
+                        recursos += 50
+                        print(f"ahora tiene {recursos} soles")
+                        soles.remove(solesitos)
 
-    # Todo Crear cuadricula
-    if len(Rectangulos) == 0:
-        i = 0
-        columna = 0
-        fila = 0
-        for y in range(112, height - 128, (height - 240) // 5):
-                for x in range(208, width - 242, (width - 450) // 9):
-                        Rectangulos.append(RectanguloOscuro(x, y, columna, fila, i))
-                        columna += 1
-                        i += 1
-                fila += 1
+                cuadroPala.detectarClick(mx, my)
+                botonSig.detectarClick(mx, my)
 
-    for rectangulo in Rectangulos:
-        rectangulo.dibujar()
-        rectangulo.mostrarLoQueContiene()
-        if rectangulo.contiene:
-            if rectangulo.contiene[0] not in defensas:
-                defensanueva = rectangulo.contiene[0]
-                defensas.append(defensanueva)
-            if rectangulo.contiene[0].semurio():
-                print(f"semurio la planta {rectangulo.contiene[0].nombre}, en la fila {rectangulo.fila}, columna {rectangulo.columna}")
-                defensas.remove(rectangulo.contiene[0])
-                rectangulo.contiene = []
-    for defensa in defensas:
-        if not botonSig.clickeable:
-            defensa.atacar()
-        else:
-            defensa.projectiles = []
+        # Todo Crear cuadricula
+        if len(Rectangulos) == 0:
+            i = 0
+            columna = 0
+            fila = 0
+            for y in range(112, height - 128, (height - 240) // 5):
+                    for x in range(208, width - 242, (width - 450) // 9):
+                            Rectangulos.append(RectanguloOscuro(x, y, columna, fila, i))
+                            columna += 1
+                            i += 1
+                    fila += 1
 
-
-    # Todo Dibujar cuadro plantas
-    if len(CuadradosPlantas) == 0:
-        i = 0
-        for x in range(457, 853 - 75, 75):
-            CuadradosPlantas.append(CuadroPlantas(x, i, 10))
-            i += 1
-
-    for cuadro in CuadradosPlantas:
-        cuadro.dibujarCuadrado()
-        # si esta vacio entonces le metemos el objeto
-        if len(cuadro.contains) == 0:
-            for defensa in defensasEscogidas:
-                # se hace para que no quite de defensas escogidas
-                objDefensa = defensa
-                cuadro.contains.append(objDefensa)
-        # Lo que contiene cada cuadrado
-        cuadro.mostrarLoQueContiene()
-    # Dibujar pala
-    cuadroPala.dibujar()
-    #Dibujar boton sig
-    botonSig.dibujar()
-
-
-    #TOdo Dibujar enemigos si hay enemigos
-    for enemigo in Enemigos:
-        enemigo.ySegunSuFila()
-        enemigo.dibujar()
-        enemigo.mover()
-        enemigo.leDioAAlgo()
-        if enemigo.fuera():
-            temoriste = True
-        if enemigo.seMurio():
-            Enemigos.remove(enemigo)
-
-
-
-    # Todo Siempre checar si el boton se puede clickear
-    botonSig.yaSePuede(Enemigos)
-    for cosa in ahoritaTiene:
-        if cosa != "Quitara":
-            if cosa.nombre == "Piñata":
-                nuevacosa = Piñata(mx,my)
-            elif cosa.nombre == "Piñata2":
-                nuevacosa = Piñata2(mx,my)
-            elif cosa.nombre == "Piñata3":
-                nuevacosa = Piñata3(mx,my)
-            elif cosa.nombre == "Nuez":
-                nuevacosa = Nuez(mx,my)
-            elif cosa.nombre == "Girasol":
-                nuevacosa = Girasol(mx,my)
-            nuevacosa.dibujarDefensa()
-        else:
-            pygame.draw.circle(win, (0, 0, 0), (mx, my), 25)
-
-    # Todo soles
-    if not botonSig.clickeable:
-        if not temoriste:
-            if cooldown >= 500:
-                cooldown = 0
-                generarcalaveras(0,0,0)
+        for rectangulo in Rectangulos:
+            rectangulo.dibujar()
+            rectangulo.mostrarLoQueContiene()
+            if rectangulo.contiene:
+                if rectangulo.contiene[0] not in defensas:
+                    defensanueva = rectangulo.contiene[0]
+                    defensas.append(defensanueva)
+                if rectangulo.contiene[0].semurio():
+                    print(f"semurio la planta {rectangulo.contiene[0].nombre}, en la fila {rectangulo.fila}, columna {rectangulo.columna}")
+                    defensas.remove(rectangulo.contiene[0])
+                    rectangulo.contiene = []
+        for defensa in defensas:
+            if not botonSig.clickeable:
+                defensa.atacar()
             else:
-                cooldown += 1
+                defensa.projectiles = []
 
-            for solesitos in soles:
-                solesitos.saltar(win)
+
+        # Todo Dibujar cuadro plantas
+        if len(CuadradosPlantas) == 0:
+            i = 0
+            for x in range(457, 853 - 75, 75):
+                CuadradosPlantas.append(CuadroPlantas(x, i, 10))
+                i += 1
+
+        for cuadro in CuadradosPlantas:
+            cuadro.dibujarCuadrado()
+            # si esta vacio entonces le metemos el objeto
+            if len(cuadro.contains) == 0:
+                for defensa in defensasEscogidas:
+                    # se hace para que no quite de defensas escogidas
+                    objDefensa = defensa
+                    cuadro.contains.append(objDefensa)
+            # Lo que contiene cada cuadrado
+            cuadro.mostrarLoQueContiene()
+        # Dibujar pala
+        cuadroPala.dibujar()
+        #Dibujar boton sig
+        botonSig.dibujar()
+
+
+        #TOdo Dibujar enemigos si hay enemigos
+        for enemigo in Enemigos:
+            enemigo.ySegunSuFila()
+            enemigo.dibujar()
+            enemigo.mover()
+            enemigo.leDioAAlgo()
+            if enemigo.fuera():
+                temoriste = True
+            if enemigo.seMurio():
+                Enemigos.remove(enemigo)
+
+
+
+        # Todo Siempre checar si el boton se puede clickear
+        botonSig.yaSePuede(Enemigos)
+        for cosa in ahoritaTiene:
+            if cosa != "Quitara":
+                if cosa.nombre == "Piñata":
+                    nuevacosa = Piñata(mx,my)
+                elif cosa.nombre == "Piñata2":
+                    nuevacosa = Piñata2(mx,my)
+                elif cosa.nombre == "Piñata3":
+                    nuevacosa = Piñata3(mx,my)
+                elif cosa.nombre == "Nuez":
+                    nuevacosa = Nuez(mx,my)
+                elif cosa.nombre == "Girasol":
+                    nuevacosa = Girasol(mx,my)
+                nuevacosa.dibujarDefensa()
+            else:
+                pygame.draw.circle(win, (0, 0, 0), (mx, my), 25)
+
+        # Todo soles
+        if not botonSig.clickeable:
+            if not temoriste:
+                if cooldown >= 500:
+                    cooldown = 0
+                    generarcalaveras(0,0,0)
+                else:
+                    cooldown += 1
+
+                for solesitos in soles:
+                    solesitos.saltar(win)
+
+    #Todo VAS A VALER KBRON
+    else:
+        gameover(win)
+        if userInput[pygame.K_r]:
+            recursos = 50
+            temoriste = False
+            botonSig.Oleada = 0
+
+
 
 
     pygame.time.delay(10)
