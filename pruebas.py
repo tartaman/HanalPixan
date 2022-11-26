@@ -20,6 +20,8 @@ flame =[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/
         pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "6.png")), (70, 70)),
         pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "0.png")), (70, 70))]
 
+girasol=pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes", "calavera.png")), (70, 70))
+
 # todo Cosas importantes del juego
 pygame.init()
 width = 1280
@@ -139,7 +141,7 @@ class Enemigo:
     def __init__(self):
         self.x = 1155
         self.y = -100
-        self.velx = 6
+        self.velx = 0.4
         self.salud = 100
         self.radio = 35
         self.daño = 1
@@ -212,7 +214,7 @@ class Piñata:
         self.nombre = "Piñata"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius*2, self.radius*2)
         self.precio = 50
-    def dibujarDefensa(self):
+    def dibujarDefensa(self, win):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius*2, self.radius*2)
         pygame.draw.rect(win, (0, 0, 0), pygame.Rect(self.hitbox),1)
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
@@ -282,7 +284,7 @@ class Piñata2:
         self.soles = soles
         self.soles =- self.precio
         return self.soles
-    def dibujarDefensa(self):
+    def dibujarDefensa(self,win):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
@@ -348,7 +350,7 @@ class Piñata3:
         self.soles = soles
         self.soles =- self.precio
         return self.soles
-    def dibujarDefensa(self):
+    def dibujarDefensa(self,win):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
@@ -411,7 +413,7 @@ class Nuez:
         self.soles = soles
         self.soles =- self.precio
         return self.soles
-    def dibujarDefensa(self):
+    def dibujarDefensa(self,win):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
 
@@ -454,9 +456,9 @@ class Girasol:
         self.soles = soles
         self.soles =- self.precio
         return self.soles
-    def dibujarDefensa(self):
+    def dibujarDefensa(self,win):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
-        pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
+        win.blit(girasol, (self.x-self.radius, self.y-self.radius))
 
     def dibujarDefensaEC(self, x, y):
         pygame.draw.circle(win, self.color, (x, y), self.radius)
@@ -597,7 +599,7 @@ class CuadroPlantas:
     def mostrarLoQueContiene(self):
         self.contains[self.indice].x = self.x + self.width // 2
         self.contains[self.indice].y = self.y + self.height // 2
-        self.contains[self.indice].dibujarDefensa()
+        self.contains[self.indice].dibujarDefensa(win)
 
 
 class RectanguloOscuro:
@@ -643,7 +645,7 @@ class RectanguloOscuro:
             # Cambiar coordenadas
             self.contiene[0].x = self.x + self.width // 2
             self.contiene[0].y = self.y + self.height // 2
-            self.contiene[0].dibujarDefensa()
+            self.contiene[0].dibujarDefensa(win)
 
 
 def dibujar_cosas():
@@ -786,7 +788,7 @@ while run:
                     nuevacosa = Nuez(mx,my)
                 elif cosa.nombre == "Girasol":
                     nuevacosa = Girasol(mx,my)
-                nuevacosa.dibujarDefensa()
+                nuevacosa.dibujarDefensa(win)
             else:
                 pygame.draw.circle(win, (0, 0, 0), (mx, my), 25)
 
