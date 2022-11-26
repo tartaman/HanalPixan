@@ -21,6 +21,7 @@ flame =[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/
         pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "0.png")), (70, 70))]
 
 girasol=pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes", "calavera.png")), (70, 70))
+mazapan= pygame.image.load(os.path.join(".vscode/Imagenes", "mazapan.png"))
 
 # todo Cosas importantes del juego
 pygame.init()
@@ -415,7 +416,7 @@ class Nuez:
         return self.soles
     def dibujarDefensa(self,win):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
-        pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
+        win.blit(mazapan, (self.x-self.radius-10, self.y-self.radius-10))
 
     def dibujarDefensaEC(self, x, y):
         pygame.draw.circle(win, self.color, (x, y), self.radius)
