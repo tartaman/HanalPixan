@@ -22,6 +22,8 @@ flame =[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/
 
 girasol=pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes", "calavera.png")), (70, 70))
 mazapan= pygame.image.load(os.path.join(".vscode/Imagenes", "mazapan.png"))
+piñata = pygame.image.load(os.path.join(".vscode/Imagenes", "pinnata.png"))
+maiz = pygame.image.load(os.path.join(".vscode/Imagenes", "maiz.png"))
 
 # todo Cosas importantes del juego
 pygame.init()
@@ -60,8 +62,8 @@ class ProjectilTeledirigido(Projectil):
     def __init__(self,x,y):
         self.x = x
         self.y = y
-        self.velx = 1
-        self.vely = 1
+        self.velx = 2
+        self.vely = 2
         self.radio = 10
         self.color = (255,255,0)
     def dirigir(self, enemigox,enemigoy):
@@ -217,8 +219,7 @@ class Piñata:
         self.precio = 50
     def dibujarDefensa(self, win):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius*2, self.radius*2)
-        pygame.draw.rect(win, (0, 0, 0), pygame.Rect(self.hitbox),1)
-        pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
+        win.blit(piñata, (self.x-self.radius-10, self.y-self.radius-15))
 
     # en cuadrado
     def dibujarDefensaEC(self, x, y):
@@ -232,7 +233,7 @@ class Piñata:
     def atacar(self):
         self.Cooldown()
         if self.cooldown == 0:
-            self.projectiles.append(Projectil(self.x, self.y))
+            self.projectiles.append(Projectil(self.x+30, self.y-5))
         for projectil in self.projectiles:
             projectil.dibujar()
             projectil.mover()
@@ -268,7 +269,7 @@ class Piñata2:
         self.color = (255, 255, 0)
         self.projectiles = []
         self.cooldown = 0
-        self.daño = 100
+        self.daño = 7
         self.vida = 100
         self.nombre = "Piñata2"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
@@ -287,7 +288,7 @@ class Piñata2:
         return self.soles
     def dibujarDefensa(self,win):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
-        pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
+        win.blit(maiz, (self.x-self.radius-10, self.y-self.radius-15))
 
     def dibujarDefensaEC(self, x, y):
         pygame.draw.circle(win, self.color, (x, y), self.radius)
