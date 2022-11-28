@@ -5,10 +5,7 @@ import os.path
 # todo Esto falta namas y nos podemos ir a matar
 """  
 falta:,
--Mecanicas de cada planta
--Mecanicas de cada enemy
--Que los misiles no se quiten si no hay enemigos
-Si
+no]]
 """
 #toDO cosas para cargar imagenes
 flame =[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "0.png")), (70, 70)),
@@ -39,7 +36,7 @@ background = pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imag
 mx, my = pygame.mouse.get_pos()
 Rectangulos = []
 CuadradosPlantas = []
-recursos = 50
+recursos = 10000
 nuevacosa = 0
 run = True
 font = pygame.font.Font('freesansbold.ttf', 25)
@@ -70,7 +67,8 @@ class ProjectilTeledirigido(Projectil):
         self.vely = 2
         self.radio = 10
         self.image = balamaiz
-    def dirigir(self, enemigox,enemigoy):
+
+    def dirigir(self, enemigox, enemigoy):
         if self.x > enemigox:
             self.x -= self.velx
         if self.x < enemigox:
@@ -173,6 +171,7 @@ class Enemigo:
         self.color = (255, 0, 0)
         self.fila = random.randint(0, 4)
         self.hitbox = (self.x - self.radio, self.y-self.radio, self.radio*2, self.radio*2)
+        self.comiendo = False
 
     def dibujar(self):
         self.hitbox = (self.x-self.radio, self.y-self.radio, self.radio * 2, self.radio * 2)
@@ -205,18 +204,23 @@ class Enemigo:
             return True
 
     def leDioAAlgo(self):
-        for defensa in defensas:
-            if self.y - self.radio < defensa.hitbox[1] + defensa.hitbox[3] and self.y + self.radio > enemigo.hitbox[1]:
-                if self.x + self.radio > defensa.hitbox[0] and self.x - self.radio < defensa.hitbox[0] + defensa.hitbox[2]:
-                    if self.fila == defensa.fila:
+        for defensax in defensas:
+            if self.y - self.radio < defensax.hitbox[1] + defensax.hitbox[3] and self.y + self.radio > defensax.hitbox[1]:
+                if self.x + self.radio > defensax.hitbox[0] and self.x - self.radio < defensax.hitbox[0] + defensax.hitbox[2]:
+                    if self.fila == defensax.fila:
                         self.velx = 0
-                        self.color = (255,255,255)
-                        defensa.leDieron(self.daño)
-                        print("esta comiendo")
-            else:
-                self.velx = 0.3
-                self.color = (255,0,0)
-                print(clock.get_fps())
+                        self.color = (255, 255, 255)
+                        defensax.leDieron(self.daño)
+                        if defensax.semurio():
+                            defensas.remove(defensax)
+                            self.reset()
+
+                    else:
+                        self.reset()
+    def reset(self):
+        self.velx = 0.4
+        self.color = (255, 0, 0)
+        self.comiendo = False
 
 
 
@@ -703,7 +707,6 @@ click = False
 cooldown= 0
 temoriste = False
 
-
 # Todo loop principal
 while run:
     userInput = pygame.key.get_pressed()
@@ -755,7 +758,7 @@ while run:
                 if rectangulo.contiene[0].semurio():
                     print(f"semurio la planta {rectangulo.contiene[0].nombre}, en la fila {rectangulo.fila}, columna {rectangulo.columna}")
                     defensas.remove(rectangulo.contiene[0])
-                    rectangulo.contiene = []
+                    rectangulo.contiene.pop()
         for defensa in defensas:
             if not botonSig.clickeable:
                 defensa.atacar()
@@ -839,7 +842,7 @@ while run:
             temoriste = False
             botonSig.Oleada = 0
 
-
+    print(defensas)
 
 
     clock.tick(30)
