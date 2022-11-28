@@ -24,6 +24,8 @@ girasol=pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes"
 mazapan= pygame.image.load(os.path.join(".vscode/Imagenes", "mazapan.png"))
 piñata = pygame.image.load(os.path.join(".vscode/Imagenes", "pinnata.png"))
 maiz = pygame.image.load(os.path.join(".vscode/Imagenes", "maiz.png"))
+dulce= pygame.image.load(os.path.join(".vscode/Imagenes", "dulce.png"))
+balamaiz = pygame.image.load(os.path.join(".vscode/Imagenes", "balamaiz.png"))
 
 # todo Cosas importantes del juego
 pygame.init()
@@ -40,6 +42,8 @@ CuadradosPlantas = []
 recursos = 50
 nuevacosa = 0
 run = True
+font = pygame.font.Font('freesansbold.ttf', 25)
+text = font.render(str(recursos), True, (0,0,0), (255, 255,255 ))
 
 # todo Cosas de los proyectiles
 class Projectil:
@@ -48,9 +52,9 @@ class Projectil:
         self.y = y
         self.velx = 3
         self.radio = 10
-        self.color = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
+        self.image = dulce
     def dibujar(self):
-        pygame.draw.circle(win, self.color, (self.x, self.y), self.radio)
+        win.blit(self.image, (self.x-self.radio+2, self.y-self.radio))
     def mover(self):
         self.x += self.velx
 
@@ -65,7 +69,7 @@ class ProjectilTeledirigido(Projectil):
         self.velx = 2
         self.vely = 2
         self.radio = 10
-        self.color = (255,255,0)
+        self.image = balamaiz
     def dirigir(self, enemigox,enemigoy):
         if self.x > enemigox:
             self.x -= self.velx
@@ -137,6 +141,24 @@ class CuadroPala:
                     print("pala")
                     ahoritaTiene.append("Quitara")
                     print(f"ahorita tiene: {ahoritaTiene}")
+
+
+class cuadroSoles:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.width = 90
+        self.height = 85
+        self.color = (91, 44, 111)
+        self.color2= (165, 105, 189 )
+
+    def dibujar(self,win):
+        pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
+        pygame.draw.rect(win, self.color2, pygame.Rect(self.x+15, self.y+5, self.width-27, self.height-40))
+        win.blit(flame[3],(self.x+13, self.y-5))
+        text = font.render(str(recursos), True, (0, 0, 0), (255, 255, 255))
+        win.blit(text, (self.x+32,self.y+55))
+
 
 
 # Todo cosas relacionadas a los enemigos
@@ -554,7 +576,7 @@ class CuadroPlantas:
     def __init__(self, x, indice, y=5):
         self.color = (254, 214, 146)
         self.width = 70
-        self.height = 70
+        self.height = 80
         self.x = x
         self.y = y
         self.indice = indice
@@ -675,6 +697,7 @@ soles = []
 cosasEnRectangulos = 0
 rectanguloPlantas = RectanguloPlantas(((width - (width // 3)) // 2), 0)
 cuadroPala = CuadroPala(0, 0)
+cuadroSoles = cuadroSoles(360, 8)
 botonSig = BotonSig()
 click = False
 cooldown= 0
@@ -761,6 +784,8 @@ while run:
         cuadroPala.dibujar()
         #Dibujar boton sig
         botonSig.dibujar()
+        #dibujar soles
+        cuadroSoles.dibujar(win)
 
 
         #TOdo Dibujar enemigos si hay enemigos
