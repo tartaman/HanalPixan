@@ -643,6 +643,8 @@ class RectanguloOscuro:
         self.contiene = []
 
     def dibujar(self):
+
+
         pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height), 1)
 
     def detectarClick(self, mx, my):
