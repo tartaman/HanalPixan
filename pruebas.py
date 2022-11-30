@@ -21,8 +21,8 @@ girasol=pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes"
 mazapan= pygame.image.load(os.path.join(".vscode/Imagenes", "mazapan.png"))
 piñata = pygame.image.load(os.path.join(".vscode/Imagenes", "pinnata.png"))
 maiz = pygame.image.load(os.path.join(".vscode/Imagenes", "maiz.png"))
-dulce= pygame.image.load(os.path.join(".vscode/Imagenes", "dulce.png"))
-balamaiz = pygame.image.load(os.path.join(".vscode/Imagenes", "balamaiz.png"))
+dulce= pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes", "dulce.png")), (30,30))
+balamaiz = pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes", "balamaiz.png")),(30,30))
 merengue = pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes", "merengue.png")),(80, 80))
 
 # todo Cosas importantes del juego
@@ -48,8 +48,8 @@ class Projectil:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.velx = 3
-        self.radio = 10
+        self.velx = 5
+        self.radio = 15
         self.image = dulce
     def dibujar(self):
         win.blit(self.image, (self.x-self.radio+2, self.y-self.radio))
@@ -64,9 +64,9 @@ class ProjectilTeledirigido(Projectil):
     def __init__(self,x,y):
         self.x = x
         self.y = y
-        self.velx = 2
-        self.vely = 2
-        self.radio = 10
+        self.velx = 5
+        self.vely = 5
+        self.radio = 15
         self.image = balamaiz
 
     def dirigir(self, enemigox, enemigoy):
@@ -108,9 +108,13 @@ class BotonSig:
                         Enemigos.append(Enemigo())
                         # Lo que vamos a hacer es que cuando el enemigo muera, lo quitamos de la lista y pues muere, sabes
                         # y cuando la lista ya no tenga, va a volver a poner enemigos.
+                    if self.Oleada >=3:
+                        for i in range(self.Oleada//2):
+                            Enemigos.append(Enemigo2())
                     for enemigo in Enemigos:
                         enemigo.x += i
-                        i += 70
+                        i += 120
+                        enemigo.velx += self.Oleada*0.1
                 print(f"en enemigos hay: {Enemigos}")
                 print(f"Oleada: {self.Oleada}")
     def yaSePuede(self, enemigos):
@@ -165,18 +169,18 @@ class Enemigo:
     def __init__(self):
         self.x = 1155
         self.y = -100
-        self.velx = 0.4
+        self.velx = 1
         self.salud = 100
         self.radio = 35
         self.daño = 1
-        self.color = (255, 0, 0)
+        self.color = (self.salud, 0, 0)
         self.fila = random.randint(0, 4)
         self.hitbox = (self.x - self.radio, self.y-self.radio, self.radio*2, self.radio*2)
         self.comiendo = False
 
     def dibujar(self):
         self.hitbox = (self.x-self.radio, self.y-self.radio, self.radio * 2, self.radio * 2)
-        pygame.draw.circle(win, self.color, (self.x, self.y), self.radio)
+        pygame.draw.circle(win,self.color, (self.x, self.y), self.radio)
     def mover(self):
         self.x -= self.velx
     def posicion(self):
@@ -219,10 +223,23 @@ class Enemigo:
                     else:
                         self.reset()
     def reset(self):
-        self.velx = 0.4
+        self.velx = 1
         self.color = (255, 0, 0)
         self.comiendo = False
 
+#Enemigo 2 pq era muy bueno
+class Enemigo2(Enemigo):
+    def __init__(self):
+        self.x = 1155
+        self.y = -100
+        self.velx = 2
+        self.salud = 100
+        self.radio = 35
+        self.daño = 1
+        self.color = (0, 255, 0)
+        self.fila = random.randint(0, 4)
+        self.hitbox = (self.x - self.radio, self.y - self.radio, self.radio * 2, self.radio * 2)
+        self.comiendo = False
 
 
 # todo cosas relacionadas a plantas
@@ -274,7 +291,10 @@ class Piñata:
                                 pass
                             enemigo.leDieron(self.daño)
             if projectil.fuera():
-                self.projectiles.remove(projectil)
+                try:
+                    self.projectiles.remove(projectil)
+                except:
+                    pass
 
     def semurio(self):
         if self.vida <= 0:
@@ -296,7 +316,7 @@ class Piñata2:
         self.color = (255, 255, 0)
         self.projectiles = []
         self.cooldown = 0
-        self.daño = 7
+        self.daño = 20
         self.vida = 100
         self.nombre = "Piñata2"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
@@ -321,7 +341,7 @@ class Piñata2:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
     def Cooldown(self):
-        if self.cooldown >= 300:
+        if self.cooldown >= 500:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
@@ -339,11 +359,16 @@ class Piñata2:
                 if projectil.y - projectil.radio < enemigo.hitbox[1] + enemigo.hitbox[3] and projectil.y + projectil.radio > enemigo.hitbox[1]:
                     if projectil.x + projectil.radio > enemigo.hitbox[0] and projectil.x - projectil.radio < enemigo.hitbox[0] + enemigo.hitbox[2]:
                         if len(self.projectiles) != 0:
-                            self.projectiles.remove(self.projectiles[0])
+                            try:
+                                self.projectiles.remove(self.projectiles[0])
+                            except:
+                                print("xd")
                             enemigo.leDieron(self.daño)
             if projectil.fuera():
-                self.projectiles.remove(projectil)
-
+                try:
+                    self.projectiles.remove(projectil)
+                except:
+                    print("xd")
     def semurio(self):
         if self.vida <= 0:
             return True
@@ -427,7 +452,7 @@ class Nuez:
         self.projectiles = []
         self.cooldown = 0
         self.daño = 10
-        self.vida = 300
+        self.vida = 3000
         self.nombre = "Nuez"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         self.precio = 50
@@ -852,5 +877,5 @@ while run:
     print(defensas)
 
 
-    clock.tick(30)
+    clock.tick(60)
     pygame.display.update()
