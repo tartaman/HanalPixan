@@ -23,6 +23,7 @@ piñata = pygame.image.load(os.path.join(".vscode/Imagenes", "pinnata.png"))
 maiz = pygame.image.load(os.path.join(".vscode/Imagenes", "maiz.png"))
 dulce= pygame.image.load(os.path.join(".vscode/Imagenes", "dulce.png"))
 balamaiz = pygame.image.load(os.path.join(".vscode/Imagenes", "balamaiz.png"))
+merengue = pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes", "merengue.png")),(80, 80))
 
 # todo Cosas importantes del juego
 pygame.init()
@@ -36,11 +37,11 @@ background = pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imag
 mx, my = pygame.mouse.get_pos()
 Rectangulos = []
 CuadradosPlantas = []
-recursos = 10000
+recursos = 200
 nuevacosa = 0
 run = True
 font = pygame.font.Font('freesansbold.ttf', 25)
-text = font.render(str(recursos), True, (0,0,0), (255, 255,255 ))
+text = font.render(str(recursos), True, (0,0,0))
 
 # todo Cosas de los proyectiles
 class Projectil:
@@ -154,7 +155,7 @@ class cuadroSoles:
         pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
         pygame.draw.rect(win, self.color2, pygame.Rect(self.x+15, self.y+5, self.width-27, self.height-40))
         win.blit(flame[3],(self.x+13, self.y-5))
-        text = font.render(str(recursos), True, (0, 0, 0), (255, 255, 255))
+        text = font.render(str(recursos), True, (255,255,255))
         win.blit(text, (self.x+32,self.y+55))
 
 
@@ -380,7 +381,7 @@ class Piñata3:
         return self.soles
     def dibujarDefensa(self,win):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
-        pygame.draw.circle(win, self.color, (self.x, self.y), self.radius)
+        win.blit(merengue, (self.x-self.radius-10, self.y-self.radius-15))
 
     def dibujarDefensaEC(self, x, y):
         pygame.draw.circle(win, self.color, (x, y), self.radius)
@@ -759,6 +760,10 @@ while run:
                     defensas.append(defensanueva)
                 if rectangulo.contiene[0].semurio():
                     print(f"semurio la planta {rectangulo.contiene[0].nombre}, en la fila {rectangulo.fila}, columna {rectangulo.columna}")
+                    if rectangulo.contiene[0].nombre == "Piñata3":
+                        for enemigo in Enemigos:
+                            if enemigo.x >= rectangulo.contiene[0].x and enemigo.y == rectangulo.contiene[0].y:
+                                Enemigos.remove(enemigo)
                     defensas.remove(rectangulo.contiene[0])
                     rectangulo.contiene.pop()
         for defensa in defensas:
