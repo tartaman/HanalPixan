@@ -16,6 +16,11 @@ flame =[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/
         pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "5.png")), (70, 70)),
         pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "6.png")), (70, 70)),
         pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "0.png")), (70, 70))]
+cuadrosplantas = [pygame.image.load(os.path.join(".vscode/Imagenes/Plantas", "1.png")),
+                  pygame.image.load(os.path.join(".vscode/Imagenes/Plantas", "2.png")),
+                  pygame.image.load(os.path.join(".vscode/Imagenes/Plantas", "3.png")),
+                  pygame.image.load(os.path.join(".vscode/Imagenes/Plantas", "4.png")),
+                  pygame.image.load(os.path.join(".vscode/Imagenes/Plantas", "5.png"))]
 
 girasol=pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes", "calavera.png")), (70, 70))
 mazapan= pygame.image.load(os.path.join(".vscode/Imagenes", "mazapan.png"))
@@ -260,10 +265,13 @@ class Piñata:
         self.vida = 100
         self.nombre = "Piñata"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius*2, self.radius*2)
-        self.precio = 50
+        self.precio = 100
     def dibujarDefensa(self, win):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius*2, self.radius*2)
         win.blit(piñata, (self.x-self.radius-10, self.y-self.radius-15))
+
+    def dibujarcarta(self,  win):
+        win.blit(cuadrosplantas[0], (self.x-self.radius, self.y-self.radius-5))
 
     # en cuadrado
     def dibujarDefensaEC(self, x, y):
@@ -320,22 +328,15 @@ class Piñata2:
         self.vida = 100
         self.nombre = "Piñata2"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
-        self.precio = 50
+        self.precio = 150
         self.soles = 0
 
-    def sepuede(self, soles):
-        self.soles = soles
-        if self.soles >= self.precio:
-            return True
-        else:
-            return False
-    def comprada(self, soles):
-        self.soles = soles
-        self.soles =- self.precio
-        return self.soles
     def dibujarDefensa(self,win):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         win.blit(maiz, (self.x-self.radius-10, self.y-self.radius-15))
+
+    def dibujarcarta(self,  win):
+        win.blit(cuadrosplantas[4], (self.x-self.radius, self.y-self.radius-5))
 
     def dibujarDefensaEC(self, x, y):
         pygame.draw.circle(win, self.color, (x, y), self.radius)
@@ -392,21 +393,15 @@ class Piñata3:
         self.vida = 100
         self.nombre = "Piñata3"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
-        self.precio = 50
+        self.precio = 75
         self.soles = 0
-    def sepuede(self, soles):
-        self.soles = soles
-        if self.soles >= self.precio:
-            return True
-        else:
-            return False
-    def comprada(self, soles):
-        self.soles = soles
-        self.soles =- self.precio
-        return self.soles
-    def dibujarDefensa(self,win):
+
+    def dibujarDefensa(self, win):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         win.blit(merengue, (self.x-self.radius-10, self.y-self.radius-15))
+
+    def dibujarcarta(self,  win):
+        win.blit(cuadrosplantas[3], (self.x-self.radius, self.y-self.radius-5))
 
     def dibujarDefensaEC(self, x, y):
         pygame.draw.circle(win, self.color, (x, y), self.radius)
@@ -457,19 +452,13 @@ class Nuez:
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         self.precio = 50
         self.soles = 0
-    def sepuede(self, soles):
-        self.soles = soles
-        if self.soles >= self.precio:
-            return True
-        else:
-            return False
-    def comprada(self, soles):
-        self.soles = soles
-        self.soles =- self.precio
-        return self.soles
+
     def dibujarDefensa(self,win):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         win.blit(mazapan, (self.x-self.radius-10, self.y-self.radius-10))
+
+    def dibujarcarta(self,  win):
+        win.blit(cuadrosplantas[2], (self.x-self.radius, self.y-self.radius-5))
 
     def dibujarDefensaEC(self, x, y):
         pygame.draw.circle(win, self.color, (x, y), self.radius)
@@ -500,19 +489,12 @@ class Girasol:
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         self.precio = 50
 
-    def sepuede(self, soles):
-        self.soles = soles
-        if self.soles >= self.precio:
-            return True
-        else:
-            return False
-    def comprada(self, soles):
-        self.soles = soles
-        self.soles =- self.precio
-        return self.soles
     def dibujarDefensa(self,win):
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         win.blit(girasol, (self.x-self.radius, self.y-self.radius))
+
+    def dibujarcarta(self,  win):
+        win.blit(cuadrosplantas[1], (self.x-self.radius, self.y-self.radius-5))
 
     def dibujarDefensaEC(self, x, y):
         pygame.draw.circle(win, self.color, (x, y), self.radius)
@@ -653,7 +635,7 @@ class CuadroPlantas:
     def mostrarLoQueContiene(self):
         self.contains[self.indice].x = self.x + self.width // 2
         self.contains[self.indice].y = self.y + self.height // 2
-        self.contains[self.indice].dibujarDefensa(win)
+        self.contains[self.indice].dibujarcarta(win)
 
 
 class RectanguloOscuro:
