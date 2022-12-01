@@ -659,7 +659,7 @@ class RectanguloOscuro:
                 if len(ahoritaTiene) != 0:
                     if ahoritaTiene[0] == "Quitara" and self.contiene != []:
                         defensas.remove(self.contiene[0])
-                        self.contiene.remove(self.contiene[0])
+                        self.contiene.pop()
                         print("lo quito")
                     if ahoritaTiene[0] == "Quitara" and self.contiene == []:
                         ahoritaTiene.pop()
@@ -756,11 +756,15 @@ while run:
                     print(f"semurio la planta {rectangulo.contiene[0].nombre}, en la fila {rectangulo.fila}, columna {rectangulo.columna}")
                     if rectangulo.contiene[0].nombre == "Piñata3":
                         ecosperoshion = ((rectangulo.contiene[0].x - rectangulo.contiene[0].radius) - 92, (rectangulo.contiene[0].y - rectangulo.contiene[0].radius) - 96, 276, 288)
-                        pygame.draw.rect(win, (255,255,255), pygame.Rect(ecosperoshion))
-                        for enemigo in Enemigos:
-                            if enemigo.y - enemigo.radio <= ecosperoshion[1] + ecosperoshion[3] and enemigo.y + enemigo.radio >= ecosperoshion[1]:
-                                if enemigo.x + enemigo.radio >= ecosperoshion[0] and enemigo.x - enemigo.radio <= ecosperoshion[0] + ecosperoshion[2]:
-                                    Enemigos.remove(enemigo)
+                        for i in range(15):
+                            pygame.draw.rect(win, (255,255,255), pygame.Rect(ecosperoshion))
+                            for enemigo in Enemigos:
+                                if enemigo.y - enemigo.radio <= ecosperoshion[1] + ecosperoshion[3] and enemigo.y + enemigo.radio >= ecosperoshion[1]:
+                                    if enemigo.x + enemigo.radio >= ecosperoshion[0] and enemigo.x - enemigo.radio <= ecosperoshion[0] + ecosperoshion[2]:
+                                        try:
+                                            Enemigos.remove(enemigo)
+                                        except:
+                                            print("xd")
                     defensas.remove(rectangulo.contiene[0])
                     rectangulo.contiene.pop()
         for defensa in defensas:
