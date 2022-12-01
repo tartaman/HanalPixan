@@ -42,7 +42,7 @@ background = pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imag
 mx, my = pygame.mouse.get_pos()
 Rectangulos = []
 CuadradosPlantas = []
-recursos = 200
+recursos = 1000
 nuevacosa = 0
 run = True
 font = pygame.font.Font('freesansbold.ttf', 25)
@@ -390,7 +390,7 @@ class Piñata3:
         self.projectiles = []
         self.cooldown = 0
         self.daño = 10
-        self.vida = 100
+        self.vida = 50
         self.nombre = "Piñata3"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         self.precio = 75
@@ -412,20 +412,7 @@ class Piñata3:
         elif self.cooldown >= 0:
             self.cooldown += 1
     def atacar(self):
-        self.Cooldown()
-        if self.cooldown == 0:
-            self.projectiles.append(Projectil(self.x, self.y))
-        for projectil in self.projectiles:
-            projectil.dibujar()
-            projectil.mover()
-            for enemigo in Enemigos:
-                if projectil.y - projectil.radio < enemigo.hitbox[1] + enemigo.hitbox[3] and projectil.y + projectil.radio > enemigo.hitbox[1]:
-                    if projectil.x + projectil.radio > enemigo.hitbox[0] and projectil.x - projectil.radio < enemigo.hitbox[0] + enemigo.hitbox[2]:
-                        if len(self.projectiles) != 0:
-                            self.projectiles.remove(self.projectiles[0])
-                            enemigo.leDieron(self.daño)
-            if projectil.fuera():
-                self.projectiles.remove(projectil)
+        print("a")
 
     def semurio(self):
         if self.vida <= 0:
@@ -768,9 +755,12 @@ while run:
                 if rectangulo.contiene[0].semurio():
                     print(f"semurio la planta {rectangulo.contiene[0].nombre}, en la fila {rectangulo.fila}, columna {rectangulo.columna}")
                     if rectangulo.contiene[0].nombre == "Piñata3":
+                        ecosperoshion = ((rectangulo.contiene[0].x - rectangulo.contiene[0].radius) - 92, (rectangulo.contiene[0].y - rectangulo.contiene[0].radius) - 96, 276, 288)
+                        pygame.draw.rect(win, (255,255,255), pygame.Rect(ecosperoshion))
                         for enemigo in Enemigos:
-                            if enemigo.x >= rectangulo.contiene[0].x and enemigo.y == rectangulo.contiene[0].y:
-                                Enemigos.remove(enemigo)
+                            if enemigo.y - enemigo.radio <= ecosperoshion[1] + ecosperoshion[3] and enemigo.y + enemigo.radio >= ecosperoshion[1]:
+                                if enemigo.x + enemigo.radio >= ecosperoshion[0] and enemigo.x - enemigo.radio <= ecosperoshion[0] + ecosperoshion[2]:
+                                    Enemigos.remove(enemigo)
                     defensas.remove(rectangulo.contiene[0])
                     rectangulo.contiene.pop()
         for defensa in defensas:
