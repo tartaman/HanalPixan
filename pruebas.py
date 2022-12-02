@@ -3,9 +3,11 @@ import random
 import os.path
 
 # todo Esto falta namas y nos podemos ir a matar
-"""  
-falta:,
-no]]
+""" 
+falta:
+Mas lento los enemigos
+Cooldown de las plantas
+Sprite y sonido de merengue
 """
 #toDO cosas para cargar imagenes
 flame =[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "0.png")), (70, 70)),
@@ -42,7 +44,7 @@ background = pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imag
 mx, my = pygame.mouse.get_pos()
 Rectangulos = []
 CuadradosPlantas = []
-recursos = 1000
+recursos = 10000
 nuevacosa = 0
 run = True
 font = pygame.font.Font('freesansbold.ttf', 25)
@@ -119,7 +121,8 @@ class BotonSig:
                     for enemigo in Enemigos:
                         enemigo.x += i
                         i += 120
-                        enemigo.velx += self.Oleada*0.1
+                        enemigo.velx += self.Oleada//2
+                        enemigo.daño += 5
                 print(f"en enemigos hay: {Enemigos}")
                 print(f"Oleada: {self.Oleada}")
     def yaSePuede(self, enemigos):
@@ -174,7 +177,7 @@ class Enemigo:
     def __init__(self):
         self.x = 1155
         self.y = -100
-        self.velx = 1
+        self.velx = 0.5
         self.salud = 100
         self.radio = 35
         self.daño = 1
@@ -853,5 +856,5 @@ while run:
     print(defensas)
 
 
-    clock.tick(60)
+    clock.tick(30)
     pygame.display.update()
