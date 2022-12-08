@@ -310,7 +310,8 @@ class Enemigo2(Enemigo):
         self.hitbox = (self.x - self.radio, self.y - self.radio, self.radio * 2, self.radio * 2)
         self.comiendo = False
         self.stepIndex = 0
-        self.nerfeo=4
+        self.nerfeo
+
 
 
 # todo cosas relacionadas a plantas
