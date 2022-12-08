@@ -1,6 +1,7 @@
 import pygame
 import random
 import os.path
+import time
 
 # todo Esto falta namas y nos podemos ir a matar
 """ 
@@ -18,6 +19,33 @@ flame =[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/
         pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "5.png")), (70, 70)),
         pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "6.png")), (70, 70)),
         pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "0.png")), (70, 70))]
+
+Esqueleto=[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile000.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile001.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile002.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile003.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile004.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile005.png")), (130, 130))
+
+]
+Esqueletoatac=[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile000.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile001.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile002.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile003.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile004.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile005.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile006.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile007.png")), (130, 130))
+]
+Esqueletomorir=[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile000.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile001.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile002.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile003.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile004.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile005.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile006.png")), (130, 130)),
+pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile007.png")), (130, 130))
+]
 cuadrosplantas = [pygame.image.load(os.path.join(".vscode/Imagenes/Plantas", "1.png")),
                   pygame.image.load(os.path.join(".vscode/Imagenes/Plantas", "2.png")),
                   pygame.image.load(os.path.join(".vscode/Imagenes/Plantas", "3.png")),
@@ -185,12 +213,24 @@ class Enemigo:
         self.fila = random.randint(0, 4)
         self.hitbox = (self.x - self.radio, self.y-self.radio, self.radio*2, self.radio*2)
         self.comiendo = False
+        self.stepIndex =0
+        self.nerfeo = 4
 
     def dibujar(self):
         self.hitbox = (self.x-self.radio, self.y-self.radio, self.radio * 2, self.radio * 2)
-        pygame.draw.circle(win,self.color, (self.x, self.y), self.radio)
+
+
     def mover(self):
         self.x -= self.velx
+        if not self.comiendo:
+            if self.stepIndex >= 6:
+                self.stepIndex = 0
+            win.blit(Esqueleto[self.stepIndex], (self.x - self.radio * 2, self.y - self.radio * 2))
+            if self.nerfeo == 4:
+                self.stepIndex += 1
+                self.nerfeo = 0
+            else:
+                self.nerfeo +=1
     def posicion(self):
         return self.x
 
@@ -213,13 +253,32 @@ class Enemigo:
     def seMurio(self):
         if self.salud > 0:
             return False
+
         else:
+            self.stepIndex = 0
+            self.nerfeo = 50
+            for i in range(350):
+                win.blit(Esqueletomorir[self.stepIndex], (self.x - self.radio * 2, self.y - self.radio * 2))
+                if self.nerfeo == 50:
+                    self.stepIndex += 1
+                    self.nerfeo = 0
+                else:
+                    self.nerfeo += 1
             return True
 
     def leDioAAlgo(self):
         for defensax in defensas:
             if self.y - self.radio < defensax.hitbox[1] + defensax.hitbox[3] and self.y + self.radio > defensax.hitbox[1]:
                 if self.x + self.radio > defensax.hitbox[0] and self.x - self.radio < defensax.hitbox[0] + defensax.hitbox[2]:
+                    self.comiendo = True
+                    if self.stepIndex >= 8:
+                        self.stepIndex = 0
+                    win.blit(Esqueletoatac[self.stepIndex], (self.x - self.radio * 2, self.y - self.radio * 2))
+                    if self.nerfeo == 4:
+                        self.stepIndex += 1
+                        self.nerfeo = 0
+                    else:
+                        self.nerfeo += 1
                     if self.fila == defensax.fila:
                         self.velx = 0
                         self.color = (255, 255, 255)
@@ -228,8 +287,10 @@ class Enemigo:
                             defensas.remove(defensax)
                             self.reset()
 
+
                     else:
                         self.reset()
+
     def reset(self):
         self.velx = 1
         self.color = (255, 0, 0)
@@ -248,6 +309,8 @@ class Enemigo2(Enemigo):
         self.fila = random.randint(0, 4)
         self.hitbox = (self.x - self.radio, self.y - self.radio, self.radio * 2, self.radio * 2)
         self.comiendo = False
+        self.stepIndex = 0
+        self.nerfeo=4
 
 
 # todo cosas relacionadas a plantas
@@ -265,7 +328,7 @@ class Piñata:
         self.cooldown = 0
         self.daño = 10
         self.recursos = recursos
-        self.vida = 100
+        self.vida = 150
         self.nombre = "Piñata"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius*2, self.radius*2)
         self.precio = 100
@@ -327,8 +390,8 @@ class Piñata2:
         self.color = (255, 255, 0)
         self.projectiles = []
         self.cooldown = 0
-        self.daño = 20
-        self.vida = 100
+        self.daño = 30
+        self.vida = 150
         self.nombre = "Piñata2"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         self.precio = 150
@@ -393,7 +456,7 @@ class Piñata3:
         self.projectiles = []
         self.cooldown = 0
         self.daño = 10
-        self.vida = 50
+        self.vida = 100
         self.nombre = "Piñata3"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         self.precio = 75
@@ -474,7 +537,7 @@ class Girasol:
         self.radius = 35
         self.color = (0, 255, 255)
         self.cooldown = 0
-        self.vida = 100
+        self.vida = 150
         self.nombre = "Girasol"
         self.hitbox = (self.x - self.radius, self.y - self.radius, self.radius * 2, self.radius * 2)
         self.precio = 50
@@ -857,4 +920,5 @@ while run:
 
 
     clock.tick(30)
+
     pygame.display.update()
