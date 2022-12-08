@@ -72,7 +72,7 @@ background = pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imag
 mx, my = pygame.mouse.get_pos()
 Rectangulos = []
 CuadradosPlantas = []
-recursos = 10000
+recursos = 100
 nuevacosa = 0
 run = True
 font = pygame.font.Font('freesansbold.ttf', 25)
@@ -250,6 +250,7 @@ class Enemigo:
 
     def leDieron(self, daño):
         self.salud -= daño
+        self.reset()
     def seMurio(self):
         if self.salud > 0:
             return False
@@ -283,16 +284,23 @@ class Enemigo:
                         self.velx = 0
                         self.color = (255, 255, 255)
                         defensax.leDieron(self.daño)
-                        if defensax.semurio():
-                            defensas.remove(defensax)
-                            self.reset()
+                        for i in range(50):
+                            if defensax.semurio():
+                                try:
+                                    defensas.remove(defensax)
+                                    for enemigo in Enemigos:
+                                        for i in range(15):
+                                            enemigo.reset()
+                                except:
+                                    print("Xd")
+                                self.velx = botonSig.Oleada//2
 
 
                     else:
                         self.reset()
 
     def reset(self):
-        self.velx = 1
+        self.velx = botonSig.Oleada/2
         self.color = (255, 0, 0)
         self.comiendo = False
 
@@ -310,7 +318,7 @@ class Enemigo2(Enemigo):
         self.hitbox = (self.x - self.radio, self.y - self.radio, self.radio * 2, self.radio * 2)
         self.comiendo = False
         self.stepIndex = 0
-        self.nerfeo
+        self.nerfeo = 4
 
 
 
@@ -345,7 +353,7 @@ class Piñata:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
     def Cooldown(self):
-        if self.cooldown >= 100:
+        if self.cooldown >= 50:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
@@ -829,7 +837,9 @@ while run:
                                 if enemigo.y - enemigo.radio <= ecosperoshion[1] + ecosperoshion[3] and enemigo.y + enemigo.radio >= ecosperoshion[1]:
                                     if enemigo.x + enemigo.radio >= ecosperoshion[0] and enemigo.x - enemigo.radio <= ecosperoshion[0] + ecosperoshion[2]:
                                         try:
-                                            Enemigos.remove(enemigo)
+                                            enemigo.salud -= 3
+                                            for i in range(15):
+                                                enemigo.reset()
                                         except:
                                             print("xd")
                     defensas.remove(rectangulo.contiene[0])
@@ -870,8 +880,8 @@ while run:
         for enemigo in Enemigos:
             enemigo.ySegunSuFila()
             enemigo.dibujar()
-            enemigo.mover()
             enemigo.leDioAAlgo()
+            enemigo.mover()
             if enemigo.fuera():
                 temoriste = True
             if enemigo.seMurio():
@@ -913,12 +923,13 @@ while run:
     else:
         gameover(win)
         if userInput[pygame.K_r]:
-            recursos = 50
+            recursos = 100
             temoriste = False
             botonSig.Oleada = 0
 
     print(defensas)
-
+    if userInput[pygame.K_i]:
+        recursos += 50
 
     clock.tick(30)
 
