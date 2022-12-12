@@ -3,13 +3,7 @@ import random
 import os.path
 import time
 
-# todo Esto falta namas y nos podemos ir a matar
-""" 
-falta:
-Mas lento los enemigos
-Cooldown de las plantas
-Sprite y sonido de merengue
-"""
+
 #toDO cosas para cargar imagenes
 flame =[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "0.png")), (70, 70)),
         pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "1.png")), (70, 70)),
@@ -330,7 +324,6 @@ class Piñata:
         self.y = y
         self.image = ""
         self.fila = fila
-        # radio por ahora pq ajam
         self.radius = 35
         self.color = (255, 0, 0)
         self.projectiles = []
@@ -654,8 +647,7 @@ class CuadroPlantas:
         self.x = x
         self.y = y
         self.indice = indice
-        # todo //IMPORTANTE va a contener una piñata por pruebas, pero luego que hagamos para que escoja las plantas, va a
-        # todo// contener [] y luego vamos a recorrer el arreglo de plantas escogidas y ponerle a cada uno lo que contiene
+       
         self.contains = []
 
     def dibujarCuadrado(self):
@@ -919,7 +911,7 @@ while run:
                 for solesitos in soles:
                     solesitos.saltar(win)
 
-    #Todo VAS A VALER KBRON
+    
     else:
         gameover(win)
         if userInput[pygame.K_r]:
