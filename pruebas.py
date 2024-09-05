@@ -124,29 +124,32 @@ class BotonSig:
 
     def detectarClick(self, mx, my):
         i = 0
-        if (self.y + self.height) > my > self.y:
-            if self.x < mx < (self.x + self.width):
-                print("Hizo click")
-                if len(Enemigos) == 0 and self.clickeable:
-                    self.Oleada += 1
-                    #si se puede clickear significa que acabo la oleada
-                    self.clickeable = False
-                    # 5 enemigos por oleada
-                    for i in range(self.Oleada * 5):
-                        #Aqui podemos poner algo random que agarre a un enemigo de todos los que vamos a tener
-                        Enemigos.append(Enemigo())
-                        # Lo que vamos a hacer es que cuando el enemigo muera, lo quitamos de la lista y pues muere, sabes
-                        # y cuando la lista ya no tenga, va a volver a poner enemigos.
-                    if self.Oleada >=3:
-                        for i in range(self.Oleada//2):
-                            Enemigos.append(Enemigo2())
-                    for enemigo in Enemigos:
-                        enemigo.x += i
-                        i += 120
-                        enemigo.velx += self.Oleada//2
-                        enemigo.daño += 5
-                print(f"en enemigos hay: {Enemigos}")
-                print(f"Oleada: {self.Oleada}")
+        if not ((my <= self.height) and (mx >= self.x)):
+            return
+
+        if len(Enemigos) == 0 and self.clickeable:
+            self.Oleada += 1
+            #si se puede clickear significa que acabo la oleada
+            self.clickeable = False
+            # 5 enemigos por oleada
+            self.spawnEnemigos()
+        print(f"en enemigos hay: {Enemigos}")
+        print(f"Oleada: {self.Oleada}")
+
+    def spawnEnemigos(self):
+        for i in range(self.Oleada * 5):
+            # Aqui podemos poner algo random que agarre a un enemigo de todos los que vamos a tener
+            Enemigos.append(Enemigo())
+            # Lo que vamos a hacer es que cuando el enemigo muera, lo quitamos de la lista y pues muere, sabes
+            # y cuando la lista ya no tenga, va a volver a poner enemigos.
+        if self.Oleada >= 3:
+            for i in range(self.Oleada // 2):
+                Enemigos.append(Enemigo2())
+        for enemigo in Enemigos:
+            enemigo.x += i
+            i += 120
+            enemigo.velx += self.Oleada // 2
+            enemigo.daño += 5
     def yaSePuede(self, enemigos):
         if enemigos:
             self.clickeable = False
