@@ -5,41 +5,41 @@ import time
 
 
 #toDO cosas para cargar imagenes
-flame =[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "0.png")), (70, 70)),
-        pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "1.png")), (70, 70)),
-        pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "2.png")), (70, 70)),
-        pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "3.png")), (70, 70)),
-        pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "4.png")), (70, 70)),
-        pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "5.png")), (70, 70)),
-        pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "6.png")), (70, 70)),
-        pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/flame", "0.png")), (70, 70))]
+FLAME_IMAGE_PATH = ".vscode/Imagenes/flame"
+
+flame =[pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "0.png")), (70, 70)),
+        pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "1.png")), (70, 70)),
+        pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "2.png")), (70, 70)),
+        pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "3.png")), (70, 70)),
+        pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "4.png")), (70, 70)),
+        pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "5.png")), (70, 70)),
+        pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "6.png")), (70, 70)),
+        pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "0.png")), (70, 70))]
 
 Esqueleto=[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile000.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile001.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile002.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile003.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile004.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile005.png")), (130, 130))
-
-]
+           pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile001.png")), (130, 130)),
+           pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile002.png")), (130, 130)),
+           pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile003.png")), (130, 130)),
+           pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile004.png")), (130, 130)),
+           pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile005.png")), (130, 130))]
 Esqueletoatac=[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile000.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile001.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile002.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile003.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile004.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile005.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile006.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile007.png")), (130, 130))
-]
+               pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile001.png")), (130, 130)),
+               pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile002.png")), (130, 130)),
+               pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile003.png")), (130, 130)),
+               pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile004.png")), (130, 130)),
+               pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile005.png")), (130, 130)),
+               pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile006.png")), (130, 130)),
+               pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile007.png")), (130, 130))
+               ]
 Esqueletomorir=[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile000.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile001.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile002.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile003.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile004.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile005.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile006.png")), (130, 130)),
-pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile007.png")), (130, 130))
-]
+                pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile001.png")), (130, 130)),
+                pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile002.png")), (130, 130)),
+                pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile003.png")), (130, 130)),
+                pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile004.png")), (130, 130)),
+                pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile005.png")), (130, 130)),
+                pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile006.png")), (130, 130)),
+                pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile007.png")), (130, 130))]
+
 cuadrosplantas = [pygame.image.load(os.path.join(".vscode/Imagenes/Plantas", "1.png")),
                   pygame.image.load(os.path.join(".vscode/Imagenes/Plantas", "2.png")),
                   pygame.image.load(os.path.join(".vscode/Imagenes/Plantas", "3.png")),
