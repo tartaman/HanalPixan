@@ -615,15 +615,14 @@ class calaveras:
                 self.click = True
         return self.click
 
-def generarcalaveras(x,y,state):
+
+def generarcalaveras(pos_x,pos_y,state):
     if state == 0:
         x = random.randint(15, 115)
         y = random.randint(161, 478)
+        soles.append(calaveras(x, y))
     else:
-        x = x
-        y = y
-    soles.append(calaveras(x, y))
-    print("se genero sol xd")
+        soles.append(calaveras(pos_x, pos_y))
 
 
 #todo Cosas de la rejilla (NO TOCAR SI NO SE MUERE)
