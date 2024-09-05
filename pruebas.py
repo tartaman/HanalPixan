@@ -123,7 +123,6 @@ class BotonSig:
         pygame.draw.rect(win, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
 
     def detectarClick(self, mx, my):
-        i = 0
         if not ((my <= self.height) and (mx >= self.x)):
             return
 
@@ -137,6 +136,7 @@ class BotonSig:
         print(f"Oleada: {self.Oleada}")
 
     def spawnEnemigos(self):
+        i = 0
         for i in range(self.Oleada * 5):
             # Aqui podemos poner algo random que agarre a un enemigo de todos los que vamos a tener
             Enemigos.append(Enemigo())
