@@ -7,38 +7,39 @@ import time
 #toDO cosas para cargar imagenes
 FLAME_IMAGE_PATH = ".vscode/Imagenes/flame"
 
-flame =[pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "0.png")), (70, 70)),
+flame = [(pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, f"{i}.png")), (70,70))) for i in range(7)]
+"""flame =[pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "0.png")), (70, 70)),
         pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "1.png")), (70, 70)),
         pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "2.png")), (70, 70)),
         pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "3.png")), (70, 70)),
         pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "4.png")), (70, 70)),
         pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "5.png")), (70, 70)),
         pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "6.png")), (70, 70)),
-        pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "0.png")), (70, 70))]
+        pygame.transform.scale(pygame.image.load(os.path.join(FLAME_IMAGE_PATH, "0.png")), (70, 70))]"""
 
-Esqueleto=[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile000.png")), (130, 130)),
-           pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile001.png")), (130, 130)),
-           pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile002.png")), (130, 130)),
-           pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile003.png")), (130, 130)),
-           pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile004.png")), (130, 130)),
-           pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile005.png")), (130, 130))]
-Esqueletoatac=[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile000.png")), (130, 130)),
-               pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile001.png")), (130, 130)),
-               pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile002.png")), (130, 130)),
-               pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile003.png")), (130, 130)),
-               pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile004.png")), (130, 130)),
-               pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile005.png")), (130, 130)),
-               pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile006.png")), (130, 130)),
-               pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile007.png")), (130, 130))
-               ]
-Esqueletomorir=[pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile000.png")), (130, 130)),
-                pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile001.png")), (130, 130)),
-                pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile002.png")), (130, 130)),
-                pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile003.png")), (130, 130)),
-                pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile004.png")), (130, 130)),
-                pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile005.png")), (130, 130)),
-                pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile006.png")), (130, 130)),
-                pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile007.png")), (130, 130))]
+Esqueleto=[(pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", f"tile00{i}.png")), (130, 130))) for i in range(6)]
+    #pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile001.png")), (130, 130)),
+     #      pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile002.png")), (130, 130)),
+      #     pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile003.png")), (130, 130)),
+       #    pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile004.png")), (130, 130)),
+        #   pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/caminar", "tile005.png")), (130, 130))]"""
+Esqueletoatac=[(pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", f"tile00{i}.png")), (130, 130))) for i in range(8)]
+               #pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile001.png")), (130, 130)),
+               #pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile002.png")), (130, 130)),
+               #pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile003.png")), (130, 130)),
+               #pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile004.png")), (130, 130)),
+               #pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile005.png")), (130, 130)),
+               #pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile006.png")), (130, 130)),
+               #pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/atacar", "tile007.png")), (130, 130))]
+
+Esqueletomorir=[(pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", f"tile00{i}.png")), (130, 130))) for i in range(8)]
+                #pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile001.png")), (130, 130)),
+                #pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile002.png")), (130, 130)),
+                #pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile003.png")), (130, 130)),
+                #pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile004.png")), (130, 130)),
+                #pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile005.png")), (130, 130)),
+                #pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile006.png")), (130, 130)),
+                #pygame.transform.scale(pygame.image.load(os.path.join(".vscode/Imagenes/Esqueleto/morir", "tile007.png")), (130, 130))]
 
 cuadrosplantas = [pygame.image.load(os.path.join(".vscode/Imagenes/Plantas", "1.png")),
                   pygame.image.load(os.path.join(".vscode/Imagenes/Plantas", "2.png")),
@@ -129,7 +130,7 @@ class BotonSig:
         if len(Enemigos) == 0 and self.clickeable:
             self.Oleada += 1
             #si se puede clickear significa que acabo la oleada
-            self.clickeable = False
+            #self.clickeable = False
             # 5 enemigos por oleada
             self.spawnEnemigos()
         print(f"en enemigos hay: {Enemigos}")
@@ -349,7 +350,7 @@ class Piñata:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
     def Cooldown(self):
-        if self.cooldown >= 50:
+        if self.cooldown >= .0001:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
@@ -413,7 +414,7 @@ class Piñata2:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
     def Cooldown(self):
-        if self.cooldown >= 500:
+        if self.cooldown >= .05:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
@@ -603,7 +604,7 @@ class calaveras:
         self.vely -= 0.15
         if self.vely < -4:
             self.vely = 4
-        if self.stepIndex >= 8:
+        if self.stepIndex >= 7:
             self.stepIndex = 0
         win.blit(flame[self.stepIndex], (self.x-self.radio*2+10, self.y-self.radio*2))
         self.stepIndex += 1
@@ -784,7 +785,6 @@ while run:
         win.fill((0, 0, 0))
         mx, my = pygame.mouse.get_pos()
         dibujar_cosas()
-
         for event in ev:
             # todo aqui abajo se pone lo que necesite ser con click
             if event.type == pygame.MOUSEBUTTONDOWN:
