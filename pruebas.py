@@ -350,7 +350,7 @@ class Piñata:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
     def Cooldown(self):
-        if self.cooldown >= .0001:
+        if self.cooldown >= 50:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
@@ -414,7 +414,7 @@ class Piñata2:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
     def Cooldown(self):
-        if self.cooldown >= .05:
+        if self.cooldown >= 60:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
@@ -559,7 +559,7 @@ class Girasol:
         pygame.draw.circle(win, self.color, (x, y), self.radius)
 
     def Cooldowndesol(self):
-        if self.cooldown >= 454:
+        if self.cooldown >= 150:
             self.cooldown = 0
         elif self.cooldown >= 0:
             self.cooldown += 1
@@ -904,7 +904,7 @@ while run:
         # Todo soles
         if not botonSig.clickeable:
             if not temoriste:
-                if cooldown >= 500:
+                if cooldown >= 150:
                     cooldown = 0
                     generarcalaveras(0,0,0)
                 else:
